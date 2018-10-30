@@ -1,0 +1,81 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>{{ contest["title"] }}</h3>
+<hr/>
+
+<ul class="nav nav-tabs">
+    <li><a href="/contest/overview/{{ str(contest[" _id"]) }}">Overview</a></li>
+    <li><a href="/contest/problem/{{ str(contest[" _id"]) }}">Problem</a></li>
+    <li class="active"><a href="/contest/submission/{{ str(contest[" _id"]) }}">Submission</a></li>
+    <li><a href="/contest/rank/{{ str(contest[" _id"]) }}">Rank</a></li>
+</ul>
+<br/>
+
+<form id="filters" class="form-inline">
+    <input id="filters-page" type="hidden" name="page" value="1"/>
+    <input id="submission-filters-nickname" type="text" name="nickname" value="{{ params[" nickname"] }}"
+    placeholder="Nickname - RegExp" class="form-control" />&nbsp;
+    <input id="submission-filters-result" type="text" name="result" value="{{ params[" result"] }}" placeholder="Result
+    - RegExp" class="form-control" />&nbsp;
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"><span>
+    </button>&nbsp;
+    <a href="/contest/submission/{{ str(contest[" _id"]) }}" class="btn btn-default">
+    <span class="glyphicon glyphicon-trash"></span>
+    </a>&nbsp;
+    <button type="submit" class="btn btn-success pull-right">
+        <span class="glyphicon glyphicon-refresh"></span>
+    </button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nickname</th>
+        <th>Problem</th>
+        <th>Result</th>
+        <th>Time</th>
+        <th>Memory</th>
+        <th>Language</th>
+        <th>CodeSize</th>
+        <th>SubmitTime</th>
+        <th>#</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in submissions %}
+    <tr>
+        <td>{{ item["nickname"] }}</td>
+        <td><a href="/contest/problem/{{ contest[" _id"] }}?n={{ item["n"] }}">Problem {{ chr(ord("A") + item["n"])
+            }}</a></td>
+        {% if item["result"] == "Queueing" %}
+        <td class="result-queueing">Queueing</td>
+        {% elif item["result"] == "Accepted" %}
+        <td class="result-accepted">Accepted</td>
+        {% else %}
+        <td class="result-error">{{ item["result"] }}</td>
+        {% end %}
+        <td>{{ item["timeused"] }} ms</td>
+        <td>{{ item["memoryused"] }} kb</td>
+        <td>{{ item["language"] }}</td>
+        <td>{{ item["codesize"] }} bytes</td>
+        <td>{{ item["submittime"].strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        {% if username == "admin" or item["username"] == username or contest["username"] == username %}
+        <td>
+            <a href="/submission/{{ str(item[" _id"]) }}?contest_id={{ str(contest["_id"]) }}">
+            <span class="glyphicon glyphicon-arrow-right"></span>
+            More
+            </a>
+        </td>
+        {% else %}
+        <td></td>
+        {% end %}
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+
+{% include "../components/pager.html" %}
+
+{% end %}

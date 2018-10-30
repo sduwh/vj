@@ -1,0 +1,87 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>Submission</h3>
+<hr/>
+
+<form id="filters" class="form-inline">
+    <input id="filters-page" type="hidden" name="page" value="1"/>
+    <select id="filters-soj" name="soj" onchange="document.getElementById('filters').submit();" class="form-control">
+        <option value="">OJ</option>
+        {% for oj in ojs %}
+        <option value="{{ oj['oj'] }}">{{ oj['oj'] }}</option>
+        {% end %}
+    </select>&nbsp;
+    <script>setSelectedOption("filters-soj", "{{ params["
+    soj
+    "] }}"
+    )
+    ;</script>
+    <input id="submission-filters-sid" type="text" name="sid" value="{{ params[" sid"] }}" placeholder="ID"
+    class="form-control" />&nbsp;
+    <input id="submission-filters-nickname" type="text" name="nickname" value="{{ params[" nickname"] }}"
+    placeholder="Nickname - RegExp" class="form-control" />&nbsp;
+    <input id="submission-filters-result" type="text" name="result" value="{{ params[" result"] }}" placeholder="Result
+    - RegExp" class="form-control" />&nbsp;
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"><span>
+    </button>&nbsp;
+    <a href="/submission" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span>
+    </a>&nbsp;
+    <button type="submit" class="btn btn-success pull-right">
+        <span class="glyphicon glyphicon-refresh"></span>
+    </button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nickname</th>
+        <th>Problem</th>
+        <th>Result</th>
+        <th>Time</th>
+        <th>Memory</th>
+        <th>Language</th>
+        <th>CodeSize</th>
+        <th>SubmitTime</th>
+        <th>#</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in submissions %}
+    <tr>
+        <td>{{ item["nickname"] }}</td>
+        <td>
+            <a href="/problem/{{ item[" soj"] }}/{{ item["sid"] }}">{{ item["soj"] }}-{{ item["sid"] }}</a>
+        </td>
+        {% if item["result"] == "Queueing" %}
+        <td class="result-queueing">Queueing</td>
+        {% elif item["result"] == "Accepted" %}
+        <td class="result-accepted">Accepted</td>
+        {% else %}
+        <td class="result-error">{{ item["result"] }}</td>
+        {% end %}
+        <td>{{ item["timeused"] }} ms</td>
+        <td>{{ item["memoryused"] }} kb</td>
+        <td>{{ item["language"] }}</td>
+        <td>{{ item["codesize"] }} bytes</td>
+        <td>{{ item["submittime"].strftime("%Y-%m-%d %H:%M:%S") }}</td>
+        {% if item["username"] == username %}
+        <td>
+            <a href="/submission/{{ str(item[" _id"]) }}">
+            <span class="glyphicon glyphicon-arrow-right"></span>
+            More
+            </a>
+        </td>
+        {% else %}
+        <td></td>
+        {% end %}
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+
+{% include "../components/pager.html" %}
+
+{% end %}

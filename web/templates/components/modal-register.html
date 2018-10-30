@@ -1,0 +1,32 @@
+<div class="modal fade" id="modal-register">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Register</h4>
+            </div>
+            <form action="/register" method="POST">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <input type="text" name="username" placeholder="Username" autofocus="autofocus"
+                                   class="form-control input-lg"/>
+                            <br/>
+                            <input type="password" name="password" placeholder="Password"
+                                   class="form-control input-lg"/>
+                            <br/>
+                            <input type="text" name="nickname" placeholder="Nickname" class="form-control input-lg"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

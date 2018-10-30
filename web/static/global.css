@@ -1,0 +1,54 @@
+#layout-body {
+    margin-top: 50px;
+}
+
+.result-queueing {
+    color: purple;
+}
+
+.result-accepted {
+    color: green;
+}
+
+.result-compileerror {
+    color: orange;
+}
+
+.result-error {
+    color: red;
+}
+
+.contest-public {
+    color: green;
+}
+
+.contest-private {
+    color: red;
+}
+
+.contest-schedule {
+    color: blue;
+}
+
+.contest-running {
+    color: green;
+}
+
+.contest-ended {
+    color: red;
+}
+
+.contest-rank-accepted {
+    background-color: rgb(223, 240, 216);
+    color: green;
+}
+
+.contest-rank-first-accepted {
+    background-color: green;
+    color: rgb(223, 240, 216);
+}
+
+.contest-rank-error {
+    background-color: rgb(242, 222, 222);
+    color: red;
+}

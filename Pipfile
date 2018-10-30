@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"beautifulsoup4" = "==4.6.3"
+"bs4" = "==0.0.1"
+lxml = "==4.2.5"
+motor = "==1.1"
+pymongo = "==3.4.0"
+tornado = "==4.4.2"
+"urllib3" = "==1.23"
+requests = "*"
+
+[dev-packages]
+pylint = "*"
+"autopep8" = "*"
+
+[requires]
+python_version = "3.6"

@@ -1,0 +1,50 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>Create Problem</h3>
+<hr/>
+
+<form method="POST">
+
+    <h4>ID</h4>
+    <input name="sid" style="width: 100%" class="form-control">
+
+    <h4>Title</h4>
+    <input name="title" style="width: 100%" class="form-control">
+
+    <h4>Time Limit</h4>
+    <input name="timelimit" type="number" placeholder="MS" style="width: 100%;" class="form-control">
+
+    <h4>Memory Limit</h4>
+    <input name="memorylimit" type="number" placeholder="KB" style="width: 100%;" class="form-control">
+
+    <h4>Description</h4>
+    <textarea name="description" rows="5" style="width: 100%;" class="form-control"></textarea>
+
+    <h4>Input</h4>
+    <textarea name="input" rows="5" style="width: 100%;" class="form-control"></textarea>
+
+    <h4>Output</h4>
+    <textarea name="output" rows="5" style="width: 100%;" class="form-control"></textarea>
+
+    <h4>Sample Input</h4>
+    <textarea name="sampleinput" rows="5" style="width: 100%;" class="form-control"></textarea>
+
+    <h4>Sample Output</h4>
+    <textarea name="sampleoutput" rows="5" style="width: 100%;" class="form-control"></textarea>
+
+    <h4>Source</h4>
+    <input name="source" style="width: 100%;" class="form-control">
+
+    <h4>Input Test Case</h4>
+    <textarea name="testcaseinput" rows="5" style="width: 100%" class="form-control"></textarea>
+
+    <h4>Output Test Case</h4>
+    <textarea name="testcaseoutput" rows="5" style="width: 100%" class="form-control"></textarea>
+
+    <h4></h4>
+    <button type="submit" class="btn btn-primary">Create</button>
+
+</form>
+
+{% end %}

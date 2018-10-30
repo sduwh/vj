@@ -1,0 +1,54 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>Contest</h3>
+<hr/>
+
+<form id="filters" class="form-inline">
+    <input id="filters-page" type="hidden" name="page" value="1"/>
+    <input type="text" name="title" value="{{ params[" title"] }}" placeholder="Title - RegExp" class="form-control" />&nbsp;
+    <input type="text" name="nickname" value="{{ params[" nickname"] }}" placeholder="Manager - RegExp"
+    class="form-control" />&nbsp;
+    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"><span></button>&nbsp;
+    <a href="/contest" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a>
+    <a data-toggle="modal" data-target="#modal-contest-create" href="#" class="btn btn-success pull-right"><span
+            class="glyphicon glyphicon-plus"></span></a>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th>Openness</th>
+        <th>Manager</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in contests %}
+    <tr>
+        <td><a href="/contest/entry/{{ str(item[" _id"]) }}">{{ item["title"] }}</td>
+        <td>{{ item["begintime"] }} ~ {{ item["endtime"] }}</td>
+        {% if now < item["begintime"] %}
+        <td class="contest-schedule">Schedule</td>
+        {% elif now > item["begintime"] and now < item["endtime"] %}
+        <td class="contest-running">Running</td>
+        {% else %}
+        <td class="contest-ended">Ended</td>
+        {% end %}
+        {% if item["password"] %}
+        <td class="contest-private">Private</td>
+        {% else %}
+        <td class="contest-public">Public</td>
+        {% end %}
+        <td>{{ item["nickname"] }}</td>
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+
+{% include "../components/pager.html" %}
+{% include "../components/modal-contest-create.html" %}
+
+{% end %}

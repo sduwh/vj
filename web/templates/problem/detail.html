@@ -1,0 +1,65 @@
+{% extends "../layout.html" %}
+{% block body %}
+<style>
+    iframe {
+        height: 120%;
+    }
+</style>
+
+
+<h3>{{ problem["soj"] }}-{{ problem["sid"] }} {{ problem["title"] }}</h3>
+<hr/>
+
+<p class="text-muted pull-right">
+    {% if problem.get("Time limit") %}
+    Time Limit: {{ problem["Time limit"] }} ms /
+    {% end %}
+    {% if problem.get("Memory limit") %}
+    Memory Limit: {{ problem["Memory limit"] }} kb
+    {% end %}
+</p>
+
+<h4>Description</h4>
+<!-- <iframe id="frame-description" src="https://vjudge.net/problem/description/15204?1537166901000" width="100%" height="900px" frameborder="0" scrolling="no" style="height: 1440px;"></iframe> -->
+<!-- <iframe id="frame-description" src="https://vjudge.net/problem/description/14884?1537174366000" width="100%" frameborder="0" scrolling="no"  style="height: 900px;"></iframe> -->
+<iframe id="frame-description" src="{{ problem["
+        description_url"] }}" width="100%" frameborder="0"   style="height:900px"></iframe>
+<form name="codeForm" action="/problem/submit" method="POST">
+    <input type="hidden" name="soj" value="{{ problem[" soj"] }}" />
+    <input type="hidden" name="sid" value="{{ problem[" sid"] }}" />
+    <h4>Submit</h4>
+    <textarea name="code" rows="10" class="form-control" id="code" placeholder="请至少输入50个字符"></textarea>
+    <br/>
+    <div class="form-inline">
+        <select name="language" class="form-control">
+            {% for item in remotes %}
+            <option value="{{ item['language']}}">{{ item['remote'] }}</option>
+            {% end %}
+        </select>&nbsp;
+        {% if username %}
+        <button type="submit" class="btn btn-primary" disabled="true" id="submit">Submit</button>
+        {% else %}
+        <span>Please<a data-toggle="modal" data-target="#modal-login" href="#"> Login</a></span>
+        {% end %}
+    </div>
+</form>
+
+<script>
+    function encodeSubmit() {
+        codeForm.code.value = Base64.encode(codeForm.code.value);
+    }
+
+    window.onload = function () {
+        var el = document.getElementById('code');
+        el.addEventListener('input', function () {
+            var len = this.value.length;
+            if (len < 50) {
+                document.getElementById('submit').disabled = true;
+            } else {
+                document.getElementById('submit').disabled = false;
+            }
+        })
+    }
+</script>
+
+{% end %}

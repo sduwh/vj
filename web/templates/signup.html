@@ -1,0 +1,135 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h3>ACM市赛报名入口</h3>
+<hr/>
+
+<!-- <button data-toggle="modal" data-target="#modal-sup" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-log-in"></span> 我要报名</button> -->
+<br/>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>学校</th>
+        <th>队伍名</th>
+        <th>队长</th>
+        <th>队员1</th>
+        <th>队员2</th>
+        <th>报名状态</th>
+        <th>#</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i, sup in enumerate(sups) %}
+    <tr>
+        <td>{{ i + 1 }}</td>
+        {% if sup["school"] == "sdu" %}
+        <td>山东大学（威海）</td>
+        {% elif sup["school"] == "hit" %}
+        <td>哈尔滨工业大学（威海）</td>
+        {% elif sup["school"] == "hrbust" %}
+        <td>哈尔滨理工大学（荣成校区）</td>
+        {% elif sup["school"] == "njtu" %}
+        <td>北京交通大学（威海）</td>
+        {% elif sup["school"] == "whvc" %}
+        <td>威海职业学院</td>
+        {% else %}
+        <td>{{ sup["school"] }}</td>
+        {% end %}
+        <td>{{ sup["teamname"] }}</td>
+        <td>{{ sup["user1"]["number"] + sup["user1"]["name"] }}</td>
+        <td>{{ sup["user2"]["number"] + sup["user2"]["name"] if sup["user2"]["number"] != "" else "" }}</td>
+        <td>{{ sup["user3"]["number"] + sup["user3"]["name"] if sup["user3"]["number"] != "" else "" }}</td>
+        <td>
+            {% if sup["status"] == "报名成功" %}
+            <font color="green">{{ sup["status"] }}</font>
+            {% else %}
+            <font color="blue">{{ sup["status"] }}</font>
+            {% end %}
+        </td>
+        {% if globals()["handler"].get_secure_cookie("nickname") and
+        globals()["handler"].get_secure_cookie("nickname").decode() == "adminsignup" %}
+        <td>
+            <a href="/signup/admin/access?teamname={{ sup[" teamname"] }}">通过</a>
+            /
+            <a href="/signup/admin/delete?teamname={{ sup[" teamname"] }}">删除</a>
+        </td>
+        {% else %}
+        <td></td>
+        {% end %}
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+
+<div class="modal fade" id="modal-sup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">报名信息</h4>
+            </div>
+            <form method="POST" onkeydown="if(event.keyCode==13)return false;">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <select name="school" class="form-control">
+                                <option value="sdu">山东大学（威海）</input>
+                                <option value="hit">哈尔滨工业大学（威海）</input>
+                                <option value="brbust">哈尔滨理工大学（荣成校区）</input>
+                                <option value="njtu">北京交通大学（威海）</input>
+                                <option value="whvc">威海职业学院</input>
+                            </select>
+                            <br/>
+                            <input type="text" name="teamname" placeholder="队伍名" autofocus="autofocus"
+                                   class="form-control" required/>
+                            <hr/>
+                            <h4>队长</h4>
+                            <input type="text" name="name1" placeholder="姓名" class="form-control" required/>
+                            <br/>
+                            <input type="number" name="number1" placeholder="学号" class="form-control" required/>
+                            <br/>
+                            <input type="text" name="major1" placeholder="专业" class="form-control" required/>
+                            <br/>
+                            <input type="number" name="phone1" placeholder="电话" class="form-control" required/>
+                            <br/>
+                            <input type="email" name="email1" placeholder="邮箱" class="form-control" required/>
+                            <hr/>
+                            <h4>队员1（选填）</h4>
+                            <input type="text" name="name2" placeholder="姓名" class="form-control"/>
+                            <br/>
+                            <input type="number" name="number2" placeholder="学号" class="form-control"/>
+                            <br/>
+                            <input type="text" name="major2" placeholder="专业" class="form-control"/>
+                            <br/>
+                            <input type="number" name="phone2" placeholder="电话" class="form-control"/>
+                            <br/>
+                            <input type="email" name="email2" placeholder="邮箱" class="form-control"/>
+                            <hr/>
+                            <h4>队员2（选填）</h4>
+                            <input type="text" name="name3" placeholder="姓名" class="form-control"/>
+                            <br/>
+                            <input type="number" name="number3" placeholder="学号" class="form-control"/>
+                            <br/>
+                            <input type="text" name="major3" placeholder="专业" class="form-control"/>
+                            <br/>
+                            <input type="number" name="phone3" placeholder="电话" class="form-control"/>
+                            <br/>
+                            <input type="email" name="email3" placeholder="邮箱" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <button type="submit" class="form-control btn btn-primary">报名</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% end %}
+

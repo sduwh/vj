@@ -1,0 +1,53 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>Problem</h3>
+<hr/>
+
+<form id="filters" class="form-inline">
+    <input id="filters-page" type="hidden" name="page" value="1"/>
+    <select id="filters-soj" name="soj" onchange="document.getElementById('filters').submit();" class="form-control">
+        <option value="">OJ</option>
+        {% for oj in ojs %}
+        <option value="{{ oj['oj'] }}">{{ oj['oj'] }}</option>
+        {% end %}
+    </select>&nbsp;
+    <script>setSelectedOption("filters-soj", "{{ params["
+    soj
+    "] }}"
+    )
+    ;</script>
+    <input type="text" name="sid" value="{{ params[" sid"] }}" placeholder="ID" class="form-control" />&nbsp;
+    <input type="text" name="title" value="{{ params[" title"] }}" placeholder="Title - RegExp" class="form-control" />&nbsp;
+    <input type="text" name="source" value="{{ params[" source"] }}" placeholder="Source - RegExp" class="form-control"
+    />&nbsp;
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"><span>
+    </button>&nbsp;
+    <a href="/problem" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span>
+    </a>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>From</th>
+        <th>Title</th>
+        <th>Source</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in problems %}
+    <tr>
+        <td>{{ item["soj"] }}-{{ item["sid"] }}</td>
+        <td><a href="/problem/{{ item[" soj"] }}/{{ item["sid"] }}">{{ item["title"] }}</a></td>
+        <td>{% raw item["source"].strip() if item["source"].strip() else "None" %}</td>
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+
+{% include "../components/pager.html" %}
+
+{% end %}

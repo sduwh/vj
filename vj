@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+function backup() {
+    date=$(date +%Y%m%d-%H:%M)
+    cd ..
+    zip -rq ./vj_backup/vj_$date.zip ./vj
+    echo "Finished backup"
+}
+
+function usage(){
+    echo "USAGE:"
+    echo "vj start|stop|info [web|judger|ipProxy|spider]"
+    echo "vj backup"
+    echo "By default, web, judger, ipProxy will start|stop"
+    echo "However info will show them all"
+    echo
+    exit -1
+}
+
+case $1 in
+start)
+    case $2 in
+    web)
+        systemctl start vj.service
+        echo "start web"
+    ;;
+    judger)
+        systemctl start vj_judger.service
+        echo "start judger"
+    ;;
+    ipProxy)
+        cd ./ipProxy
+        pipenv run python ./ipProxy.py > ./ipProxy.log 2>&1 &
+        echo "start ipProxy"
+    ;;
+    spider)
+        cd ./spider
+        python3 ./spider.py > ./spider.log 2>&1 &
+        echo "start spider"
+    ;;
+    *)
+        systemctl start vj.service
+        systemctl start vj_judger.service
+        echo "start web judger"
+    ;;
+esac
+;;
+stop)
+    case $2 in
+    web)
+        systemctl stop vj.service
+        echo "stop web"
+    ;;
+    judger)
+        systemctl stop vj_judger.service
+        echo "stop judger"
+    ;;
+    ipProxy)
+        pid_ipProxy=$(ps -ef | grep "python ./ipProxy.py" | grep -v grep | awk '{print $2}')
+        kill $pid_ipProxy
+        echo "stop ipProxy:$pid_ipProxy"
+    ;;
+    spider)
+        pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
+        kill $pid_spider
+        echo "stop spider:$pid_spider"
+    ;;
+    *)
+        systemctl stop vj.service
+        systemctl stop vj_judger.service
+        echo "stop web judger"
+    ;;
+esac
+;;
+info)
+    case $2 in
+    web)
+        systemctl status vj.service
+    ;;
+    judger)
+        systemctl status vj_judger.service
+    ;;
+    ipProxy)
+        pid_ipProxy=$(ps -ef | grep "python ./ipProxy.py" | grep -v grep | awk '{print $2}')
+        echo "ipProxy:$pid_ipProxy"
+    ;;
+    spider)
+        pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
+        echo "spider:$pid_spider"
+    ;;
+    *)
+        systemctl status vj.service
+        systemctl status vj_judger.service
+        pid_ipProxy=$(ps -ef | grep "python ./ipProxy.py" | grep -v grep | awk '{print $2}')
+        echo "ipProxy:$pid_ipProxy"
+        pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
+        echo "spider:$pid_spider"
+    ;;
+    esac
+;;
+backup)
+    backup
+;;
+*)
+    usage
+;;
+esac

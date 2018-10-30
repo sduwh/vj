@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h3>Message</h3>
+<hr/>
+
+<h4 class="text-center text-muted">{{ text }}</h4>
+<p class="text-center">
+    <a href="javascript:history.go(-1)" class="btn btn-primary">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        Go Back
+    </a>
+</p>
+
+{% end %}

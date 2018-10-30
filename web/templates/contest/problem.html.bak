@@ -1,0 +1,73 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>{{ contest["title"] }}</h3>
+<hr />
+
+<ul class="nav nav-tabs">
+    <li><a href="/contest/overview/{{ str(contest["_id"]) }}">Overview</a></li>
+    <li class="active"><a href="/contest/problem/{{ str(contest["_id"]) }}">Problem</a></li>
+    <li><a href="/contest/submission/{{ str(contest["_id"]) }}">Submission</a></li>
+    <li><a href="/contest/rank/{{ str(contest["_id"]) }}">Rank</a></li>
+</ul>
+<br />
+
+{% for i in range(len(contest["problems"])) %}
+    {% if i == n %}
+        <a href="/contest/problem/{{ str(contest["_id"]) }}?n={{ i }}" class="btn btn-primary">{{ chr(ord("A") + i) }}</a>&nbsp;
+    {% else %}
+        <a href="/contest/problem/{{ str(contest["_id"]) }}?n={{ i }}" class="btn btn-default">{{ chr(ord("A") + i) }}</a>&nbsp;
+    {% end %}
+{% end %}
+<hr />
+
+<h3 class="text-center">
+    {{ chr(ord("A") + n) }} - {{ problem["alias"] or problem["title"] }}
+</h3>
+
+<p class="text-muted pull-right">
+    Time Limit: {{ problem["timelimit"] }} ms /
+    Memory Limit: {{ problem["memorylimit"] }} kb
+</p>
+
+<h4>Description</h4>
+<p>{% raw problem["description"] %}</p>
+
+<h4>Input</h4>
+<p>{% raw problem["input"] %}</p>
+
+<h4>Output</h4>
+<p>{% raw problem["output"] %}</p>
+
+<h4>Sample Input</h4>
+<pre>{% raw problem["sampleinput"] %}</pre>
+
+<h4>Sample Output</h4>
+<pre>{% raw problem["sampleoutput"] %}</pre>
+
+<h4>Source</h4>
+<pre>{% raw problem["source"].strip() if problem["source"].strip() else "None" %}</pre>
+
+<form action="/contest/submit/{{ str(contest["_id"]) }}" method="POST">
+    <input type="hidden" name="n" value="{{ n }}" />
+    <h4>Submit</h4><textarea name="code" class="form-control" rows="10"></textarea>
+    <br />
+    <div class="form-inline">
+        <select name="language" class="form-control">
+            <option value="C">C</option>
+            <option value="C++">C++</option>
+            <option value="Java">Java</option>
+        </select>&nbsp;
+        {% if username %}
+            {% if now > contest["begintime"] and now < contest["endtime"] %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            {% else %}
+                <span>Can't submit now</span>
+            {% end %}
+        {% else %}
+            <span>Please<a data-toggle="modal" data-target="#modal-login" href="#"> Login</a></span>
+        {% end %}
+    </div>
+</form>
+
+{% end %}

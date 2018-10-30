@@ -1,0 +1,28 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>Submission Detail</h3>
+<hr/>
+
+<h4>Base</h4>
+<pre>
+Result: {{ submission["result"] }}
+TimeUsed: {{ submission["timeused"] }} ms
+MemoryUsed: {{ submission["memoryused"] }} kb
+CodeSize: {{ submission["codesize"] }} byte
+</pre>
+
+<h4>Code</h4>
+<pre>{{ submission["code"] }}</pre>
+
+<h4>Error Information</h4>
+{% if submission["errorinfo"] %}
+<pre>{% raw submission["errorinfo"] %}</pre>
+{% else %}
+<pre>None</pre>
+{% end %}
+
+<h4>User</h4>
+<pre>{{ submission["username"] }} - {{ submission["nickname"] }}</pre>
+
+{% end %}

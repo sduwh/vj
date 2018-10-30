@@ -1,0 +1,41 @@
+<script>
+    function toPage(page) {
+        document.getElementById("filters-page").value = page;
+        document.getElementById("filters").submit();
+    }
+
+    function handleJumpPage(event) {
+        if (event.keyCode != 13)
+            return;
+        toPage(event.target.value);
+    }
+</script>
+
+<div class="form-inline">
+    <ul class="pager">
+        {% if params["page"] <= 1 %}
+        <li class="previous disabled">
+            <a>Previous</a>
+        </li>
+        {% else %}
+        <li class="previous">
+            <a onclick="toPage({{ params[" page"] - 1 }})" class="btn">Previous</a>
+        </li>
+        {% end %}
+        <li>
+            <input onkeypress="handleJumpPage(event)" type="text" size="3" placeholder="{{ params[" page"] }}"
+            class="form-control input-sm" />
+            /
+            {{ totalpage }}
+        </li>
+        {% if params["page"] >= totalpage %}
+        <li class="next disabled">
+            <a>Next</a>
+        </li>
+        {% else %}
+        <li class="next">
+            <a onclick="toPage({{ params[" page"] + 1 }})" class="btn">Next</a>
+        </li>
+        {% end %}
+    </ul>
+</div>
