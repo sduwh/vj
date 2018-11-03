@@ -1,16 +1,16 @@
 import datetime
+import base64
 
-from bson.objectid import ObjectId
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
+from bson.objectid import ObjectId
 
 class Handler(RequestHandler):
     @gen.coroutine
     def post(self, _id):
         """提交代码"""
         try:
-            # if self.request.remote_ip != "219.231.164.200":
+            #if self.request.remote_ip != "219.231.164.200":
             #    raise RuntimeError("请勿在外部提交")
             contest = yield self._find_contest(_id)
             if contest["password"]:

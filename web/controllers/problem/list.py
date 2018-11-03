@@ -1,6 +1,5 @@
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -56,8 +55,7 @@ class Handler(RequestHandler):
     def _find_problems(self, filters, page):
         problems = yield self.settings["database"]["problem"].find(filters, {
             "soj": 1, "sid": 1, "title": 1, "source": 1
-        }).sort([("sid", 1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(
-            self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
+        }).sort([("sid", 1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
         return problems
 
     @gen.coroutine

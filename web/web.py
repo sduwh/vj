@@ -1,33 +1,35 @@
 """Web模块"""
 
+import tornado.web
+import tornado.ioloop
+import motor.motor_tornado
+
 import config
-import controllers.contest.create
-import controllers.contest.delete
-import controllers.contest.entry
-import controllers.contest.list
-import controllers.contest.overview
-import controllers.contest.problem
-import controllers.contest.rank
-import controllers.contest.submission
-import controllers.contest.submit
 import controllers.index
-import controllers.problem.create
-import controllers.problem.detail
-import controllers.problem.list
-import controllers.problem.submit
-import controllers.signup
-import controllers.signupaccess
-import controllers.signupdelete
-import controllers.submission.detail
-import controllers.submission.list
-import controllers.user.info
 import controllers.user.login
 import controllers.user.logout
 import controllers.user.register
+import controllers.user.info
 import controllers.user.resetpassword
-import motor.motor_tornado
-import tornado.ioloop
-import tornado.web
+import controllers.problem.list
+import controllers.problem.detail
+import controllers.problem.submit
+import controllers.problem.create
+import controllers.submission.list
+import controllers.submission.detail
+import controllers.contest.list
+import controllers.contest.create
+import controllers.contest.delete
+import controllers.contest.entry
+import controllers.contest.overview
+import controllers.contest.problem
+import controllers.contest.submit
+import controllers.contest.submission
+import controllers.contest.rank
+
+import controllers.signup
+import controllers.signupaccess
+import controllers.signupdelete
 
 settings = {
     "static_path": config.static_path,
@@ -37,18 +39,17 @@ settings = {
     "cookie_secret": "____________MYSTERY____________",
 }
 
-
 def main():
     tornado.web.Application([
         (r"/", controllers.index.Handler),
-        (r"/login", controllers.user.login.Handler),
+        (r"/login", controllers.user._login.Handler),
         (r"/logout", controllers.user.logout.Handler),
         (r"/register", controllers.user.register.Handler),
         (r"/user", controllers.user.info.Handler),
         (r"/user/resetpassword", controllers.user.resetpassword.Handler),
         (r"/problem", controllers.problem.list.Handler),
         (r"/problem/([a-zA-Z_]+)/([0-9a-zA-Z-/]+)", controllers.problem.detail.Handler),
-        (r"/problem/submit", controllers.problem.submit.Handler),
+        (r"/problem/submit", controllers.problem._submit.Handler),
         (r"/problem/create", controllers.problem.create.Handler),
         (r"/submission", controllers.submission.list.Handler),
         (r"/submission/(.+?)", controllers.submission.detail.Handler),
@@ -58,7 +59,7 @@ def main():
         (r"/contest/entry/(.+?)", controllers.contest.entry.Handler),
         (r"/contest/overview/(.+?)", controllers.contest.overview.Handler),
         (r"/contest/problem/(.+?)", controllers.contest.problem.Handler),
-        (r"/contest/submit/(.+?)", controllers.contest.submit.Handler),
+        (r"/contest/submit/(.+?)", controllers.contest._submit.Handler),
         (r"/contest/submission/(.+?)", controllers.contest.submission.Handler),
         (r"/contest/rank/(.+?)", controllers.contest.rank.Handler),
 
@@ -66,9 +67,8 @@ def main():
         (r"/signup/admin/access", controllers.signupaccess.Handler),
         (r"/signup/admin/delete", controllers.signupdelete.Handler),
     ],
-        **settings).listen(config.port)
+    **settings).listen(config.port)
     tornado.ioloop.IOLoop.current().start()
-
 
 if __name__ == "__main__":
     main()

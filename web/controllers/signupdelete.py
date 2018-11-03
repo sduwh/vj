@@ -1,6 +1,5 @@
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -20,3 +19,4 @@ class Handler(RequestHandler):
         if not username:
             raise RuntimeError("Please login")
         return username.decode()
+

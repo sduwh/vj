@@ -1,10 +1,9 @@
 import datetime
 import functools
 
-from bson.objectid import ObjectId
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
+from bson.objectid import ObjectId
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -76,16 +75,15 @@ class Handler(RequestHandler):
                 # 第n项代表该用户针对第n题的相关提交数据统计
                 for _ in contest["problems"]:
                     rank[sub["username"]]["problems"].append({
-                        "error": 0,  # 错误次数
-                        "first_accepted_time": None,  # 本人首次ac时间
-                        "winner": False,  # 所有人中第一个解答出该题的
+                        "error": 0, # 错误次数
+                        "first_accepted_time": None, # 本人首次ac时间
+                        "winner": False, # 所有人中第一个解答出该题的
                     })
             # 如果本次提交ac
             if sub["result"] == "Accepted":
                 # 如果这道题尚未ac 记录首次ac时间 设置accepted为True
                 if None == rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"]:
-                    rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"] = sub["submittime"] - contest[
-                        "begintime"]
+                    rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"] = sub["submittime"] - contest["begintime"]
             else:
                 # 只有这道题尚未ac的时候才算入错误数
                 if None == rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"]:
@@ -116,8 +114,7 @@ class Handler(RequestHandler):
                         winner = user
                     continue
                 if None != rank[user]["problems"][n]["first_accepted_time"]:
-                    if rank[user]["problems"][n]["first_accepted_time"] < rank[winner]["problems"][n][
-                        "first_accepted_time"]:
+                    if rank[user]["problems"][n]["first_accepted_time"] < rank[winner]["problems"][n]["first_accepted_time"]:
                         winner = user
             if None != winner:
                 rank[winner]["problems"][n]["winner"] = True

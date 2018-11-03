@@ -1,10 +1,12 @@
 """Web 全局配置"""
+# Host
+host = "localhost"
 
 # Web服务端口
 port = 8000
 
 # 数据库地址
-dbhost = "mongodb://localhost:27017/"
+dbhost = "mongodb://{}:27017/".format(host)
 
 # 数据库名
 dbname = "vj"

@@ -1,6 +1,5 @@
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -47,3 +46,4 @@ class Handler(RequestHandler):
             return self.render("message.html", text="队名已存在")
         yield self.settings["database"]["sup"].insert_one(data)
         return self.render("message.html", text="报名成功")
+

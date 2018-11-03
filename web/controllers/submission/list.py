@@ -1,6 +1,5 @@
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -25,8 +24,7 @@ class Handler(RequestHandler):
                 cursor = self.settings["database"]["remoteOJs"].find({'soj': item['soj'], 'language': item['language']})
                 for document in (yield cursor.to_list(length=100)):
                     item['language'] = document['remote']
-            self.render("submission/list.html", submissions=submissions, params=params, totalpage=totalpage,
-                        username=username, ojs=ojs)
+            self.render("submission/list.html", submissions=submissions, params=params, totalpage=totalpage, username=username, ojs=ojs)
 
     def _get_params(self):
         params = {}
@@ -71,8 +69,7 @@ class Handler(RequestHandler):
             "language": 1,
             "codesize": 1,
             "submittime": 1,
-        }).sort([("submittime", -1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(
-            self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
+        }).sort([("submittime", -1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
         return submissions
 
     def _get_cookie_username(self):

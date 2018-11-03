@@ -1,9 +1,10 @@
-from tornado import gen
 from tornado.web import RequestHandler
+from tornado import gen
+from tornado.ioloop import IOLoop
 
 
 class BaseHandler(RequestHandler):
-    def set_default_headers(self):
+     def set_default_headers(self):
         self.set_header('Access-Control-Allow-Origin', '*')
         self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
         self.set_header('Access-Control-Max-Age', 1000)
@@ -25,7 +26,7 @@ class Handler(BaseHandler):
             cursor = self.settings["database"]["remoteOJs"].find({'soj': problem['soj']})
             remotes = []
             for document in (yield cursor.to_list(length=100)):
-                remotes.append({"language": document['language'], "remote": document['remote']})
+                remotes.append({"language": document['language'], "remote":document['remote']})
             self.render("problem/detail.html", problem=problem, username=username, remotes=remotes)
 
     @gen.coroutine
@@ -42,3 +43,5 @@ class Handler(BaseHandler):
         if not username:
             return None
         return username.decode()
+
+

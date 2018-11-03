@@ -1,9 +1,8 @@
 import datetime
 
-from bson.objectid import ObjectId
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
+from bson.objectid import ObjectId
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -28,8 +27,7 @@ class Handler(RequestHandler):
         except RuntimeError as err:
             self.render("message.html", text=str(err))
         else:
-            self.render("contest/problem.html", contest=contest, problem=problem, n=params["n"],
-                        now=datetime.datetime.now(), username=username, remotes=remotes)
+            self.render("contest/problem.html", contest=contest, problem=problem, n=params["n"], now=datetime.datetime.now(), username=username, remotes=remotes)
 
     @gen.coroutine
     def _find_contest(self, _id):

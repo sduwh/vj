@@ -9,9 +9,9 @@ function backup() {
 
 function usage(){
     echo "USAGE:"
-    echo "vj start|stop|info [web|judger|ipProxy|spider]"
+    echo "vj start|stop|info [web|judger|proxyer|spider]"
     echo "vj backup"
-    echo "By default, web, judger, ipProxy will start|stop"
+    echo "By default, web, judger will start|stop"
     echo "However info will show them all"
     echo
     exit -1
@@ -28,10 +28,10 @@ start)
         systemctl start vj_judger.service
         echo "start judger"
     ;;
-    ipProxy)
-        cd ./ipProxy
-        pipenv run python ./ipProxy.py > ./ipProxy.log 2>&1 &
-        echo "start ipProxy"
+    proxyer)
+        cd ./proxyer
+        pipenv run python ./proxyer.py > ./proxyer.log 2>&1 &
+        echo "start proxyer"
     ;;
     spider)
         cd ./spider
@@ -55,10 +55,10 @@ stop)
         systemctl stop vj_judger.service
         echo "stop judger"
     ;;
-    ipProxy)
-        pid_ipProxy=$(ps -ef | grep "python ./ipProxy.py" | grep -v grep | awk '{print $2}')
-        kill $pid_ipProxy
-        echo "stop ipProxy:$pid_ipProxy"
+    proxyer)
+        pid_proxyer=$(ps -ef | grep "python ./proxyer.py" | grep -v grep | awk '{print $2}')
+        kill $pid_proxyer
+        echo "stop proxyer:$pid_proxyer"
     ;;
     spider)
         pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
@@ -80,9 +80,9 @@ info)
     judger)
         systemctl status vj_judger.service
     ;;
-    ipProxy)
-        pid_ipProxy=$(ps -ef | grep "python ./ipProxy.py" | grep -v grep | awk '{print $2}')
-        echo "ipProxy:$pid_ipProxy"
+    proxyer)
+        pid_proxyer=$(ps -ef | grep "python ./proxyer.py" | grep -v grep | awk '{print $2}')
+        echo "proxyer:$pid_proxyer"
     ;;
     spider)
         pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
@@ -91,8 +91,8 @@ info)
     *)
         systemctl status vj.service
         systemctl status vj_judger.service
-        pid_ipProxy=$(ps -ef | grep "python ./ipProxy.py" | grep -v grep | awk '{print $2}')
-        echo "ipProxy:$pid_ipProxy"
+        pid_proxyer=$(ps -ef | grep "python ./proxyer.py" | grep -v grep | awk '{print $2}')
+        echo "proxyer:$pid_proxyer"
         pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
         echo "spider:$pid_spider"
     ;;

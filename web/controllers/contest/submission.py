@@ -1,7 +1,6 @@
-from bson.objectid import ObjectId
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
+from bson.objectid import ObjectId
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -21,8 +20,7 @@ class Handler(RequestHandler):
             self.render("message.html", text=str(err))
         else:
             username = self._get_cookie_username()
-            self.render("contest/submission.html", contest=contest, submissions=submissions, params=params,
-                        totalpage=totalpage, username=username)
+            self.render("contest/submission.html", contest=contest, submissions=submissions, params=params, totalpage=totalpage, username=username)
 
     @gen.coroutine
     def _find_contest(self, _id):
@@ -73,8 +71,7 @@ class Handler(RequestHandler):
             "language": 1,
             "codesize": 1,
             "submittime": 1,
-        }).sort([("submittime", -1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(
-            self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
+        }).sort([("submittime", -1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
         return submissions
 
     def _get_cookie_username(self):

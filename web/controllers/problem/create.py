@@ -1,10 +1,8 @@
+from tornado.web import RequestHandler
+from tornado import gen
+import os
 import hashlib
 import json
-import os
-
-from tornado import gen
-from tornado.web import RequestHandler
-
 
 class Handler(RequestHandler):
     def get(self):
@@ -19,17 +17,17 @@ class Handler(RequestHandler):
                 raise RuntimeError("没有权限")
             params = self._get_params()
 
-            path = "/root/qdu-judger/volume/test_case/" + str(params["sid"])
+            path = "/root/qdu-judger/volume/test_case/"+str(params["sid"])
             if not os.path.exists(path):
                 os.makedirs(path)
             testcaseinput = self.get_argument("testcaseinput", default="")
             testcaseoutput = self.get_argument("testcaseoutput", default="")
             print(testcaseinput)
-            with open(path + "/1.in", "w+") as f:
+            with open(path+"/1.in", "w+") as f:
                 f.write(testcaseinput)
-            with open(path + "/1.out", "w+") as f:
+            with open(path+"/1.out", "w+") as f:
                 f.write(testcaseoutput)
-            with open(path + "/info", "w+") as f:
+            with open(path+"/info", "w+") as f:
                 f.write(json.dumps({
                     "spj": False,
                     "test_cases": {
@@ -47,7 +45,7 @@ class Handler(RequestHandler):
         except Exception as err:
             return self.render("message.html", text=str(err))
         else:
-            self.redirect("/problem/VCode/" + str(params["sid"]))
+            self.redirect("/problem/VCode/"+str(params["sid"]))
 
     def _get_cookies(self):
         cookies = {}

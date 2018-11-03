@@ -2,15 +2,15 @@
 {% block body %}
 
 <h3>{{ contest["title"] }}</h3>
-<hr/>
+<hr />
 
 <ul class="nav nav-tabs">
-    <li class="active"><a href="/contest/overview/{{ str(contest[" _id"]) }}">Overview</a></li>
-    <li><a href="/contest/problem/{{ str(contest[" _id"]) }}">Problem</a></li>
-    <li><a href="/contest/submission/{{ str(contest[" _id"]) }}">Submission</a></li>
-    <li><a href="/contest/rank/{{ str(contest[" _id"]) }}">Rank</a></li>
+    <li class="active"><a href="/contest/overview/{{ str(contest["_id"]) }}">Overview</a></li>
+    <li><a href="/contest/problem/{{ str(contest["_id"]) }}">Problem</a></li>
+    <li><a href="/contest/submission/{{ str(contest["_id"]) }}">Submission</a></li>
+    <li><a href="/contest/rank/{{ str(contest["_id"]) }}">Rank</a></li>
 </ul>
-<br/>
+<br />
 
 <h4>Description</h4>
 <pre>{{ contest["description"] if contest["description"] else "None" }}</pre>
@@ -20,40 +20,40 @@
 
 <h4>Status</h4>
 {% if now < contest["begintime"] %}
-<pre><font class="contest-schedule">Schedule</font></pre>
+    <pre><font class="contest-schedule">Schedule</font></pre>
 {% elif now > contest["begintime"] and now < contest["endtime"] %}
-<pre><font class="contest-running">Running</font></pre>
+    <pre><font class="contest-running">Running</font></pre>
 {% else %}
-<pre><font class="contest-ended">Ended</font></pre>
+    <pre><font class="contest-ended">Ended</font></pre>
 {% end %}
 
 <h4>Openness</h4>
 {% if contest["password"] %}
-<pre><font class="contest-private">Private</font></pre>
+    <pre><font class="contest-private">Private</font></pre>
 {% else %}
-<pre><font class="contest-public">Public</font></pre>
+    <pre><font class="contest-public">Public</font></pre>
 {% end %}
 
 <h4>Manager</h4>
 <pre>{{ contest["nickname"] }}</pre>
 
 {% if contest["username"] == username %}
-<h4>Manage (Manager Only)</h4>
-<pre><a data-toggle="modal" data-target="#modal-delete-contest" href="#" class="btn btn-danger">Delete</a></pre>
-<div class="modal fade" id="modal-delete-contest">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Are You Sure ! ?</h4>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>&nbsp;
-                <a href="/contest/delete/{{ str(contest[" _id"]) }}" class="btn btn-danger">Yes</a>
+    <h4>Manage (Manager Only)</h4>
+    <pre><a data-toggle="modal" data-target="#modal-delete-contest" href="#" class="btn btn-danger">Delete</a></pre>
+    <div class="modal fade" id="modal-delete-contest" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Are You Sure ! ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>&nbsp;
+                    <a href="/contest/delete/{{ str(contest["_id"]) }}" class="btn btn-danger">Yes</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% end %}
 
 {% end %}

@@ -1,8 +1,7 @@
 import datetime
 
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
 
 class Handler(RequestHandler):
     @gen.coroutine
@@ -22,8 +21,7 @@ class Handler(RequestHandler):
             ojs = []
             for document in (yield cursor.to_list(length=100)):
                 ojs.append({"oj": document['soj']})
-            self.render("contest/list.html", contests=contests, params=params, totalpage=totalpage,
-                        now=datetime.datetime.now(), ojs=ojs)
+            self.render("contest/list.html", contests=contests, params=params, totalpage=totalpage, now=datetime.datetime.now(), ojs=ojs)
 
     def _get_params(self):
         params = {}
@@ -51,6 +49,5 @@ class Handler(RequestHandler):
     def _find_contests(self, filters, page):
         contests = yield self.settings["database"]["contest"].find(filters, {
             "title": 1, "begintime": 1, "endtime": 1, "password": 1, "username": 1, "nickname": 1,
-        }).sort([("_id", -1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(
-            self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
+        }).sort([("_id", -1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])
         return contests

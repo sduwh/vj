@@ -2,7 +2,7 @@
 {% block body %}
 
 <h3>Submission Detail</h3>
-<hr/>
+<hr />
 
 <h4>Base</h4>
 <pre>
@@ -17,9 +17,9 @@ CodeSize: {{ submission["codesize"] }} byte
 
 <h4>Error Information</h4>
 {% if submission["errorinfo"] %}
-<pre>{% raw submission["errorinfo"] %}</pre>
+    <pre>{% raw submission["errorinfo"] %}</pre>
 {% else %}
-<pre>None</pre>
+    <pre>None</pre>
 {% end %}
 
 <h4>User</h4>

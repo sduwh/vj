@@ -1,7 +1,6 @@
-from bson.objectid import ObjectId
-from tornado import gen
 from tornado.web import RequestHandler
-
+from tornado import gen
+from bson.objectid import ObjectId
 
 class Handler(RequestHandler):
     @gen.coroutine

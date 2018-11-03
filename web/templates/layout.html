@@ -2,10 +2,10 @@
 <html>
 
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>SduwhVJ</title>
-    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/static/global.css" rel="stylesheet"/>
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/global.css" rel="stylesheet" />
     <script src="/static/jquery.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script src="/static/laydate/laydate.js"></script>
@@ -14,44 +14,41 @@
 </head>
 
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="row">
-            <a class="navbar-brand" href="/">SduwhVJ</a>
-            <ul class="nav navbar-nav">
-                <li><a href="/problem">Problem</a></li>
-                <li><a href="/submission">Submission</a></li>
-                <li><a href="/contest">Contest</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                {% if globals()["handler"].get_secure_cookie("nickname") %}
-                <li><a href="/user"><span class="glyphicon glyphicon-user"></span> {{
-                    globals()["handler"].get_secure_cookie("nickname").decode() }}</a></li>
-                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-                {% else %}
-                <li><a data-toggle="modal" data-target="#modal-login" href="#"><span
-                        class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                <li><a data-toggle="modal" data-target="#modal-register" href="#"><span
-                        class="glyphicon glyphicon-edit"></span> Register</a></li>
-                {% end %}
-            </ul>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="row">
+                <a class="navbar-brand" href="/">SduwhVJ</a>
+                <ul class="nav navbar-nav">
+                    <li><a href="/problem">Problem</a></li>
+                    <li><a href="/submission">Submission</a></li>
+                    <li><a href="/contest">Contest</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if globals()["handler"].get_secure_cookie("nickname") %}
+                        <li><a href="/user"><span class="glyphicon glyphicon-user"></span> {{ globals()["handler"].get_secure_cookie("nickname").decode() }}</a></li>
+                        <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    {% else %}
+                        <li><a data-toggle="modal" data-target="#modal-login" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a data-toggle="modal" data-target="#modal-register" href="#"><span class="glyphicon glyphicon-edit"></span> Register</a></li>
+                    {% end %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div id="layout-body" class="container">
-    <div class="row">
-        {% block body %}
-        {% end %}
+    <div id="layout-body" class="container">
+        <div class="row">
+            {% block body %}
+            {% end %}
+        </div>
+        <footer>
+            <hr />
+            <p class="text-muted text-center">SduwhVJ @ 2018</p>
+        </footer>
     </div>
-    <footer>
-        <hr/>
-        <p class="text-muted text-center">SduwhVJ @ 2018</p>
-    </footer>
-</div>
 
-{% include "components/modal-login.html" %}
-{% include "components/modal-register.html" %}
+    {% include "components/modal-login.html" %}
+    {% include "components/modal-register.html" %}
 </body>
 
 </html>

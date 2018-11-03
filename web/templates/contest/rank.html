@@ -2,68 +2,62 @@
 {% block body %}
 
 <h3>{{ contest["title"] }}</h3>
-<hr/>
+<hr />
 
 <ul class="nav nav-tabs">
-    <li><a href="/contest/overview/{{ str(contest[" _id"]) }}">Overview</a></li>
-    <li><a href="/contest/problem/{{ str(contest[" _id"]) }}">Problem</a></li>
-    <li><a href="/contest/submission/{{ str(contest[" _id"]) }}">Submission</a></li>
-    <li class="active"><a href="/contest/rank/{{ str(contest[" _id"]) }}">Rank</a></li>
+    <li><a href="/contest/overview/{{ str(contest["_id"]) }}">Overview</a></li>
+    <li><a href="/contest/problem/{{ str(contest["_id"]) }}">Problem</a></li>
+    <li><a href="/contest/submission/{{ str(contest["_id"]) }}">Submission</a></li>
+    <li class="active"><a href="/contest/rank/{{ str(contest["_id"]) }}">Rank</a></li>
 </ul>
-<br/>
+<br />
 
-<a href="/contest/rank/{{ str(contest[" _id"]) }}" class="btn btn-success pull-right"><span
-        class="glyphicon glyphicon-refresh"></span></a>
-<br/><br/>
+<a href="/contest/rank/{{ str(contest["_id"]) }}" class="btn btn-success pull-right"><span class="glyphicon glyphicon-refresh"></span></a>
+<br /><br />
 
 <table class="table table-bordered text-center">
     <thead>
-    <tr>
-        <th class="text-center">Rank</th>
-        <th class="text-center">User</th>
-        <th class="text-center">AC / Total</th>
-        <th class="text-center">Penalty</th>
-        {% for i in range(len(contest["problems"])) %}
-        <th class="text-center">Problem {{ chr(ord("A") + i) }}</th>
-        {% end %}
-    </tr>
+        <tr>
+            <th class="text-center">Rank</th>
+            <th class="text-center">User</th>
+            <th class="text-center">AC / Total</th>
+            <th class="text-center">Penalty</th>
+            {% for i in range(len(contest["problems"])) %}
+                <th class="text-center">Problem {{ chr(ord("A") + i) }}</th>
+            {% end %}
+        </tr>
     </thead>
     <tbody>
-    {% for i, user in enumerate(rank) %}
-    <tr>
-        <td>{{ i + 1 }}</td>
-        {% if globals()["handler"].get_secure_cookie("username") and
-        globals()["handler"].get_secure_cookie("username").decode() == contest["username"] %}
-        <td>{{ user["username"] }} - {{ user["nickname"] }}</td>
-        {% else %}
-        <td>{{ user["nickname"] }}</td>
+        {% for i, user in enumerate(rank) %}
+            <tr>
+                <td>{{ i + 1 }}</td>
+                {% if globals()["handler"].get_secure_cookie("username") and globals()["handler"].get_secure_cookie("username").decode() == contest["username"] %}
+                  <td>{{ user["username"] }} - {{ user["nickname"] }}</td>
+                {% else %}
+                  <td>{{ user["nickname"] }}</td>
+                {% end %}
+                <td>{{ user["accepted"] }}/{{ user["total"] }}</td>
+                <td>{{ int(user["penalty"].total_seconds()) // 3600 }}:{{ (int(user["penalty"].total_seconds()) % 3600) // 60 }}:{{ (int(user["penalty"].total_seconds()) % 3600) % 60 }}</td>
+                {% for pro in user["problems"] %}
+                    {% if None != pro["first_accepted_time"] %}
+                        {% if pro["winner"] %}
+                            <td class="contest-rank-first-accepted">
+                        {% else %}
+                            <td class="contest-rank-accepted">
+                        {% end %}
+                            {{ int(pro["first_accepted_time"].total_seconds()) // 3600 }}:{{ (int(pro["first_accepted_time"].total_seconds()) % 3600) // 60 }}:{{ (int(pro["first_accepted_time"].total_seconds()) % 3600) % 60 }}
+                            {% if pro["error"] > 0 %}
+                                (-{{ pro["error"] }})
+                            {% end %}
+                        </td>
+                    {% elif pro["error"] > 0 %}
+                        <td class="contest-rank-error">(-{{ pro["error"] }})</td>
+                    {% else %}
+                        <td></td>
+                    {% end %}
+                {% end %}
+            </tr>
         {% end %}
-        <td>{{ user["accepted"] }}/{{ user["total"] }}</td>
-        <td>{{ int(user["penalty"].total_seconds()) // 3600 }}:{{ (int(user["penalty"].total_seconds()) % 3600) // 60
-            }}:{{ (int(user["penalty"].total_seconds()) % 3600) % 60 }}
-        </td>
-        {% for pro in user["problems"] %}
-        {% if None != pro["first_accepted_time"] %}
-        {% if pro["winner"] %}
-        <td class="contest-rank-first-accepted">
-            {% else %}
-        <td class="contest-rank-accepted">
-            {% end %}
-            {{ int(pro["first_accepted_time"].total_seconds()) // 3600 }}:{{
-            (int(pro["first_accepted_time"].total_seconds()) % 3600) // 60 }}:{{
-            (int(pro["first_accepted_time"].total_seconds()) % 3600) % 60 }}
-            {% if pro["error"] > 0 %}
-            (-{{ pro["error"] }})
-            {% end %}
-        </td>
-        {% elif pro["error"] > 0 %}
-        <td class="contest-rank-error">(-{{ pro["error"] }})</td>
-        {% else %}
-        <td></td>
-        {% end %}
-        {% end %}
-    </tr>
-    {% end %}
     </tbody>
 </table>
 

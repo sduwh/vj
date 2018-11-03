@@ -1,9 +1,9 @@
 """Spider 全局配置"""
 # ip 地址
-ip = "localhost"
+host = "localhost"
 
 # 数据库地址
-dbhost = "mongodb://{}:27017/".format(ip)
+dbhost = "mongodb://{}:27017/".format(host)
 
 # 数据库名
 dbname = "vj"
@@ -29,7 +29,7 @@ oj_list = [
     # 'FZU',
     # 'Gym',
     # 'HackerRank',
-    # 'HDU',
+    'HDU',
     # 'HihoCoder',
     # 'HIT',
     # 'HRBUST',
@@ -56,7 +56,7 @@ oj_list = [
 ]
 
 # scylla 代理
-scylla_proxy = {'http': "{}:8081".format(ip)}
+scylla_proxy = {'http': "{}:8081".format(host)}
 
 # 全局代理
 proxy = None
@@ -160,10 +160,10 @@ def print_info(message):
             print("%s [ERROR] 编码错误\n%s" % (getTime(), e))
 
 
-# ipProxy
+# proxy_pool
 import requests
 
-proxy_pool_url = "http://{}:5010".format(ip)
+proxy_pool_url = "http://{}:5010".format(host)
 
 
 def get_proxy():
