@@ -49,7 +49,7 @@ def main():
         (r"/user/resetpassword", controllers.user.resetpassword.Handler),
         (r"/problem", controllers.problem.list.Handler),
         (r"/problem/([a-zA-Z_]+)/([0-9a-zA-Z-/]+)", controllers.problem.detail.Handler),
-        (r"/problem/submit", controllers.problem._submit.Handler),
+        (r"/problem/submit", controllers.problem.submit.Handler),
         (r"/problem/create", controllers.problem.create.Handler),
         (r"/submission", controllers.submission.list.Handler),
         (r"/submission/(.+?)", controllers.submission.detail.Handler),
@@ -59,7 +59,7 @@ def main():
         (r"/contest/entry/(.+?)", controllers.contest.entry.Handler),
         (r"/contest/overview/(.+?)", controllers.contest.overview.Handler),
         (r"/contest/problem/(.+?)", controllers.contest.problem.Handler),
-        (r"/contest/submit/(.+?)", controllers.contest._submit.Handler),
+        (r"/contest/submit/(.+?)", controllers.contest.submit.Handler),
         (r"/contest/submission/(.+?)", controllers.contest.submission.Handler),
         (r"/contest/rank/(.+?)", controllers.contest.rank.Handler),
 
