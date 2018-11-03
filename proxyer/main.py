@@ -20,7 +20,7 @@ class ProxyException(Exception):
 
 def get_all_ip(num) -> list:
     res = requests.get('http://{}:5010/get_all/'.format(host))
-    ip_list = json.loads(res.content)
+    ip_list = json.loads(res.text)
     ip_list_len = len(ip_list)
     i = -1
     if ip_list_len >= num:
