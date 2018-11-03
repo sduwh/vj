@@ -9,10 +9,8 @@ function backup() {
 
 function usage(){
     echo "USAGE:"
-    echo "vj start|stop|info [web|judger|proxyer|spider]"
+    echo "vj start|stop|info [web|judger|proxyer]"
     echo "vj backup"
-    echo "By default, web, judger will start|stop"
-    echo "However info will show them all"
     echo
     exit -1
 }
@@ -21,80 +19,66 @@ case $1 in
 start)
     case $2 in
     web)
-        systemctl start vj.service
-        echo "start web"
+        systemctl start vj_web.service
+        echo "web"
     ;;
     judger)
         systemctl start vj_judger.service
-        echo "start judger"
+        echo "judger"
     ;;
     proxyer)
-        cd ./proxyer
-        pipenv run python ./proxyer.py > ./proxyer.log 2>&1 &
-        echo "start proxyer"
-    ;;
-    spider)
-        cd ./spider
-        python3 ./spider.py > ./spider.log 2>&1 &
-        echo "start spider"
+        systemctl start vj_proxyer.service
+        echo "proxyer"
     ;;
     *)
-        systemctl start vj.service
+        systemctl start vj_web.service
+        echo "web"
         systemctl start vj_judger.service
-        echo "start web judger"
+        echo "judger"
+        systemctl start vj_proxyer.service
+        echo "proxyer"
     ;;
 esac
 ;;
 stop)
     case $2 in
     web)
-        systemctl stop vj.service
-        echo "stop web"
+        systemctl stop vj_web.service
+        echo "web"
     ;;
     judger)
         systemctl stop vj_judger.service
-        echo "stop judger"
+        echo "judger"
     ;;
     proxyer)
-        pid_proxyer=$(ps -ef | grep "python ./proxyer.py" | grep -v grep | awk '{print $2}')
-        kill $pid_proxyer
-        echo "stop proxyer:$pid_proxyer"
-    ;;
-    spider)
-        pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
-        kill $pid_spider
-        echo "stop spider:$pid_spider"
+        systemctl stop vj_proxyer.service
+        echo "proxyer"
     ;;
     *)
-        systemctl stop vj.service
+        systemctl stop vj_web.service
+        echo "web"
         systemctl stop vj_judger.service
-        echo "stop web judger"
+        echo "judger"
+        systemctl stop vj_proxyer.service
+        echo "proxyer"
     ;;
 esac
 ;;
 info)
     case $2 in
     web)
-        systemctl status vj.service
+        systemctl status vj_web.service
     ;;
     judger)
         systemctl status vj_judger.service
     ;;
     proxyer)
-        pid_proxyer=$(ps -ef | grep "python ./proxyer.py" | grep -v grep | awk '{print $2}')
-        echo "proxyer:$pid_proxyer"
-    ;;
-    spider)
-        pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
-        echo "spider:$pid_spider"
+        systemctl status vj_proxyer.service
     ;;
     *)
-        systemctl status vj.service
+        systemctl status vj_web.service
         systemctl status vj_judger.service
-        pid_proxyer=$(ps -ef | grep "python ./proxyer.py" | grep -v grep | awk '{print $2}')
-        echo "proxyer:$pid_proxyer"
-        pid_spider=$(ps -ef | grep "python ./spider.py" | grep -v grep | awk '{print $2}')
-        echo "spider:$pid_spider"
+        systemctl status vj_proxyer.service
     ;;
     esac
 ;;
