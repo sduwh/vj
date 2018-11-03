@@ -2,6 +2,7 @@
 
 function backup() {
     date=$(date +%Y%m%d-%H:%M)
+    mongodump -h localhost:27017 -d vj -o ./dbbackup
     cd ..
     zip -rq ./vj_backup/vj_$date.zip ./vj
     echo "Finished backup"
