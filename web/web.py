@@ -42,7 +42,7 @@ settings = {
 def main():
     tornado.web.Application([
         (r"/", controllers.index.Handler),
-        (r"/login", controllers.user._login.Handler),
+        (r"/login", controllers.user.login.Handler),
         (r"/logout", controllers.user.logout.Handler),
         (r"/register", controllers.user.register.Handler),
         (r"/user", controllers.user.info.Handler),
