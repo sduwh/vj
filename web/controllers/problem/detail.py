@@ -27,6 +27,7 @@ class Handler(BaseHandler):
             remotes = []
             for document in (yield cursor.to_list(length=100)):
                 remotes.append({"language": document['language'], "remote":document['remote']})
+            remotes.sort(key=lambda d: d['remote'])
             self.render("problem/detail.html", problem=problem, username=username, remotes=remotes)
 
     @gen.coroutine

@@ -24,6 +24,7 @@ class Handler(RequestHandler):
             cursor = self.settings["database"]["remoteOJs"].find({'soj': problem['soj']})
             for document in (yield cursor.to_list(length=100)):
                 remotes.append({"language": document['language'], "remote": document['remote']})
+                remotes.sort(key=lambda d: d['remote'])
         except RuntimeError as err:
             self.render("message.html", text=str(err))
         else:
@@ -57,7 +58,6 @@ class Handler(RequestHandler):
         problem = yield self.settings["database"]["problem"].find_one({
             "soj": str(soj), "sid": str(sid),
         })
-        print(problem)
         if not problem:
             raise RuntimeError("No record")
         return problem
