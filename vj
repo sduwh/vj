@@ -32,12 +32,18 @@ start)
         echo "proxyer"
     ;;
     *)
-        systemctl start vj_web.service
-        echo "web"
-        systemctl start vj_judger.service
-        echo "judger"
-        systemctl start vj_proxyer.service
-        echo "proxyer"
+        if [ -z $2 ]
+        then
+            systemctl start vj_web.service
+            echo "web"
+            systemctl start vj_judger.service
+            echo "judger"
+            systemctl start vj_proxyer.service
+            echo "proxyer"
+            ;;
+        else
+            usage()
+        fi
     ;;
 esac
 ;;
@@ -56,12 +62,18 @@ stop)
         echo "proxyer"
     ;;
     *)
-        systemctl stop vj_web.service
-        echo "web"
-        systemctl stop vj_judger.service
-        echo "judger"
-        systemctl stop vj_proxyer.service
-        echo "proxyer"
+        if [ -z $2 ]
+        then
+            systemctl stop vj_web.service
+            echo "web"
+            systemctl stop vj_judger.service
+            echo "judger"
+            systemctl stop vj_proxyer.service
+            echo "proxyer"
+            ;;
+        else
+            usage()
+        fi
     ;;
 esac
 ;;
@@ -80,12 +92,18 @@ restart)
         echo "proxyer"
     ;;
     *)
-        systemctl restart vj_web.service
-        echo "web"
-        systemctl restart vj_judger.service
-        echo "judger"
-        systemctl restart vj_proxyer.service
-        echo "proxyer"
+        if [ -z $2 ]
+        then
+            systemctl restart vj_web.service
+            echo "web"
+            systemctl restart vj_judger.service
+            echo "judger"
+            systemctl restart vj_proxyer.service
+            echo "proxyer"
+            ;;
+        else
+            usage()
+        fi
     ;;
 esac
 ;;
@@ -101,9 +119,15 @@ info)
         systemctl status vj_proxyer.service
     ;;
     *)
-        systemctl status vj_web.service
-        systemctl status vj_judger.service
-        systemctl status vj_proxyer.service
+        if [ -z $2 ]
+        then
+            systemctl status vj_web.service
+            systemctl status vj_judger.service
+            systemctl status vj_proxyer.service
+            ;;
+        else
+            usage()
+        fi
     ;;
     esac
 ;;
