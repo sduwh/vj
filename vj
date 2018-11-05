@@ -40,7 +40,6 @@ start)
             echo "judger"
             systemctl start vj_proxyer.service
             echo "proxyer"
-            ;;
         else
             usage()
         fi
@@ -70,7 +69,6 @@ stop)
             echo "judger"
             systemctl stop vj_proxyer.service
             echo "proxyer"
-            ;;
         else
             usage()
         fi
@@ -100,7 +98,6 @@ restart)
             echo "judger"
             systemctl restart vj_proxyer.service
             echo "proxyer"
-            ;;
         else
             usage()
         fi
@@ -124,7 +121,6 @@ info)
             systemctl status vj_web.service
             systemctl status vj_judger.service
             systemctl status vj_proxyer.service
-            ;;
         else
             usage()
         fi
