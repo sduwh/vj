@@ -16,7 +16,8 @@ class Handler(RequestHandler):
                 'total_sub': user.get('total_sub'),
                 'total_ac': user.get('total_ac'),
                 'total_wa': user.get('total_wa'),
-                'last_submit_time': str(user.get('last_submit_time').timestamp() * 1000),
+                'last_submit_time': str(user.get('last_submit_time').timestamp() * 1000)
+                                    if user.get('last_submit_time') else None,
             })
         elif params['type'] == 'others':
             self.write({'test': 'working on'})
