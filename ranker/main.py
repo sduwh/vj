@@ -20,20 +20,25 @@ def process(user_all):
             for ac_submit in total_ac_submit:
                 total_ac_submit_set.add("{} {}".format(ac_submit['soj'], str(ac_submit['sid'])))
             total_ac = len(total_ac_submit_set)
+
+            total_wa = vj['submission'].find({'username': username, 'result': 'Wrong Answer'})
+
             try:
                 last_submit_time = vj['submission'].find_one({'username': username}, sort=[('submittime', -1)])[
                     'submittime']
             except:
                 total_sub = 0
                 total_ac = 0
+                total_wa = 0
                 last_submit_time = None
-            print("{} {} {} {} {}/{}".format(username, total_sub, total_ac, last_submit_time, cnt, total))
+            print("{} {} {} {} {}/{}".format(username, total_sub, total_ac, total_wa, last_submit_time, cnt, total))
             cnt += 1
             vj['user'].find_and_modify(
                 {'username': username},
                 {'$set': {
                     'total_sub': total_sub,
                     'total_ac': total_ac,
+                    'total_wa': total_wa,
                     'last_submit_time': last_submit_time
                 }})
 
