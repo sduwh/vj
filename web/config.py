@@ -1,6 +1,6 @@
 """Web 全局配置"""
 # Host
-host = "192.168.75.129"
+host = "localhost"
 
 # Web服务端口
 port = 8000
