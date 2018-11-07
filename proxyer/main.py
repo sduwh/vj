@@ -1,4 +1,4 @@
-"""利用多线程，验证代理ip有效性"""
+"""检查代理ip模块"""
 import json
 import time
 import requests

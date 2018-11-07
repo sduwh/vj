@@ -31,6 +31,8 @@ import controllers.signup
 import controllers.signupaccess
 import controllers.signupdelete
 
+import controllers.api.user
+
 settings = {
     "static_path": config.static_path,
     "template_path": config.template_path,
@@ -62,10 +64,10 @@ def main():
         (r"/contest/submit/(.+?)", controllers.contest.submit.Handler),
         (r"/contest/submission/(.+?)", controllers.contest.submission.Handler),
         (r"/contest/rank/(.+?)", controllers.contest.rank.Handler),
-
         (r"/signup", controllers.signup.Handler),
         (r"/signup/admin/access", controllers.signupaccess.Handler),
         (r"/signup/admin/delete", controllers.signupdelete.Handler),
+        (r'/api/user', controllers.api.user.Handler),
     ],
     **settings).listen(config.port)
     tornado.ioloop.IOLoop.current().start()

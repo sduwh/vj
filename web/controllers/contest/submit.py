@@ -90,7 +90,7 @@ class Handler(RequestHandler):
     def _add_submission(self, contest_id, cookies, params, problem):
         # code = base64.b64decode(params["code"]).decode()
         code = params["code"]
-        r = yield self.settings["database"]["submission"].insert_one({
+        r1 = yield self.settings["database"]["submission"].insert_one({
             # Contest
             "contest_id": ObjectId(contest_id),
             # User
@@ -113,5 +113,9 @@ class Handler(RequestHandler):
             "submittime": datetime.datetime.now(),
             "errorinfo": "",
         })
-        if not r.acknowledged:
+        r2 = yield self.settings["database"]["user"].update_one(
+            {'username': cookies["username"]},
+            {'$set': {'last_submit_time': datetime.datetime.now()}}
+        )
+        if not r1.acknowledged or not r2.acknowledged:
             raise RuntimeError("Create submission error")
