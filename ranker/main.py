@@ -58,14 +58,23 @@ def match_info(start, num):
         except Exception as e:
             print('{}\n{}'.format(username, e))
 
+
 def match_info_multithreading():
     start = 0
     num = 100
     total = vj['user'].count()
+    thread_pool = []
     while start < total:
         th = threading.Thread(target=match_info, args=(start, num))
-        th.start()
+        thread_pool.append(th)
         start += num
+
+    for th in thread_pool:
+        th.start()
+
+    for th in thread_pool:
+        th.join()
+
 
 def rank():
     """
@@ -80,9 +89,11 @@ def rank():
         vj['user'].find_and_modify({'_id': user['_id']}, {'$set': {'rank': cnt}})
         cnt += 1
 
+
 def main():
     match_info_multithreading()
     rank()
+
 
 if __name__ == '__main__':
     main()
