@@ -38,26 +38,26 @@ account_list = {
         'nickname': 'sduwhvj',
     },
     'VJudge_list': [
-        {
-            'username': 'sduwhvj',
-            'password': 'sduwhvj2016',
-            'nickname': 'sduwhvj',
-        },
-        {
-            'username': 'sduwhvj2018',
-            'password': 'sduwhvj2018',
-            'nickname': 'sduwhvj2018',
-        },
-        {
-            'username': 'sduwhvjtest',
-            'password': 'sduwhvjtest',
-            'nickname': 'sduwhvjtest',
-        },
-        {
-            'username': 'sduwhvj0',
-            'password': 'sduwhvj0',
-            'nickname': 'sduwhvj0',
-        },
+        # {
+        #     'username': 'sduwhvj',
+        #     'password': 'sduwhvj2016',
+        #     'nickname': 'sduwhvj',
+        # },
+        # {
+        #     'username': 'sduwhvj2018',
+        #     'password': 'sduwhvj2018',
+        #     'nickname': 'sduwhvj2018',
+        # },
+        # {
+        #     'username': 'sduwhvjtest',
+        #     'password': 'sduwhvjtest',
+        #     'nickname': 'sduwhvjtest',
+        # },
+        # {
+        #     'username': 'sduwhvj0',
+        #     'password': 'sduwhvj0',
+        #     'nickname': 'sduwhvj0',
+        # },
         {
             'username': 'sduwhvj1',
             'password': 'sduwhvj1',
