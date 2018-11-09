@@ -61,7 +61,7 @@ class VJudge(OJ):
             runId = res_dict.get('runId')
             return str(runId)
         else:
-            raise SubmitException('提交响应错误, 当前代理ip: {}\nres_dict: {}'.format(proxy, res_dict))
+            raise SubmitException('提交响应错误, 当前代理ip: {}, user: {}\nres_dict: {}'.format(proxy, self.username, res_dict))
 
     def _get_result(self, runid) -> (str, str, str, str):
         """
