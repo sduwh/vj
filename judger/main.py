@@ -59,6 +59,8 @@ def submit_target(account, sub):
     # 提交判题
     vj = VJudge(account, config.timeout, config.time_interval, config.headers,
                 config.proxy, config.host)
+    # 先获得一个代理ip
+    vj.proxy_ip = vj._get_proxy_ip()
     sub['runid'], sub['result'], sub['timeused'], sub['memoryused'], sub['errorinfo'] \
         = vj.judge(sub['soj'], sub['sid'], sub['language'], sub['code'])
 
