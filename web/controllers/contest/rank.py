@@ -43,14 +43,11 @@ class Handler(RequestHandler):
 
     @gen.coroutine
     def _find_submissions(self, _id):
-        totalcount = yield self.settings["database"]["submission"].count({
-            "contest_id": ObjectId(_id),
-        })
         submissions = yield self.settings["database"]["submission"].find({
             "contest_id": ObjectId(_id),
         }, {
             "username": 1, "nickname": 1, "result": 1, "submittime": 1, "n": 1,
-        }).to_list(totalcount)
+        }).to_list(None)
         return submissions
 
     def _make_rank(self, contest, submissions):
