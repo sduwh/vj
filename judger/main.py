@@ -22,6 +22,7 @@ def serve():
     last_submit_time = datetime.datetime(1970, 1, 1)
 
     # 初始化用户列表
+    account_list.reverse()
     for account in account_list:
         account['last_submit_time'] = last_submit_time
         account['submit_count'] = 0
