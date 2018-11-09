@@ -386,7 +386,6 @@ class Handler(RequestHandler):
         ]
         """
         # 你给我的比赛数据，要是根据比赛时间由近到远排序的，因为我们要优先展示最近的比赛
-        # TODO: 添加字段rank
         contest_list = []
         for contest_id in self.contest_id_list:
             contest = yield self.settings['database']['contest'].find_one({'_id': contest_id})
@@ -404,7 +403,7 @@ class Handler(RequestHandler):
                 'description': contest.get('description'),
                 'rank': rank
             })
-        ret = contest_list
+        ret = sorted(contest_list, key=lambda d:d['time'], reverse=True)
         return ret
 
     @gen.coroutine
