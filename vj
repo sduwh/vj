@@ -10,7 +10,7 @@ function backup() {
 
 function usage(){
     echo "USAGE:"
-    echo "vj start|stop|restart|info [web|judger|proxyer]"
+    echo "vj start|stop|restart|info [web|judger|proxyer|ranker]"
     echo "vj backup"
     echo
     exit -1
@@ -31,6 +31,10 @@ start)
         systemctl start vj_proxyer.service
         echo "proxyer"
     ;;
+    ranker)
+        systemctl start vj_ranker.service
+        echo "ranker"
+    ;;
     *)
         if [ -z $2 ]
         then
@@ -40,6 +44,8 @@ start)
             echo "judger"
             systemctl start vj_proxyer.service
             echo "proxyer"
+            systemctl start vj_ranker.service
+        echo "ranker"
         else
             usage
         fi
@@ -60,6 +66,10 @@ stop)
         systemctl stop vj_proxyer.service
         echo "proxyer"
     ;;
+    ranker)
+        systemctl stop vj_ranker.service
+        echo "ranker"
+    ;;
     *)
         if [ -z $2 ]
         then
@@ -69,6 +79,8 @@ stop)
             echo "judger"
             systemctl stop vj_proxyer.service
             echo "proxyer"
+            systemctl stop vj_ranker.service
+            echo "ranker"
         else
             usage
         fi
@@ -89,6 +101,10 @@ restart)
         systemctl restart vj_proxyer.service
         echo "proxyer"
     ;;
+    ranker)
+        systemctl restart vj_ranker.service
+        echo "ranker"
+    ;;
     *)
         if [ -z $2 ]
         then
@@ -98,6 +114,8 @@ restart)
             echo "judger"
             systemctl restart vj_proxyer.service
             echo "proxyer"
+            systemctl restart vj_ranker.service
+            echo "ranker"
         else
             usage
         fi
@@ -115,12 +133,16 @@ info)
     proxyer)
         systemctl status vj_proxyer.service
     ;;
+    ranker)
+        systemctl status vj_ranker.service
+    ;;
     *)
         if [ -z $2 ]
         then
             systemctl status vj_web.service
             systemctl status vj_judger.service
             systemctl status vj_proxyer.service
+            systemctl status vj_ranker.service
         else
             usage
         fi
