@@ -385,7 +385,6 @@ class Handler(RequestHandler):
             }
         ]
         """
-        # 你给我的比赛数据，要是根据比赛时间由近到远排序的，因为我们要优先展示最近的比赛
         contest_list = []
         for contest_id in self.contest_id_list:
             contest = yield self.settings['database']['contest'].find_one({'_id': contest_id})
@@ -403,6 +402,7 @@ class Handler(RequestHandler):
                 'description': contest.get('description'),
                 'rank': rank
             })
+        # 由新到旧
         ret = sorted(contest_list, key=lambda d:d['time'], reverse=True)
         return ret
 
@@ -499,21 +499,6 @@ class Handler(RequestHandler):
                     rank[user]["total"] += 1
                     # 总罚时加上 该题首次被提交的时间+该题错误数乘20分钟
                     rank[user]["penalty"] += pro["first_accepted_time"] + pro["error"] * datetime.timedelta(minutes=20)
-
-        # 计算每道题第一个解答出的人
-        for n in range(len(contest["problems"])):
-            winner = None
-            for user in rank.keys():
-                if winner == None:
-                    if None != rank[user]["problems"][n]["first_accepted_time"]:
-                        winner = user
-                    continue
-                if None != rank[user]["problems"][n]["first_accepted_time"]:
-                    if rank[user]["problems"][n]["first_accepted_time"] < rank[winner]["problems"][n][
-                        "first_accepted_time"]:
-                        winner = user
-            if None != winner:
-                rank[winner]["problems"][n]["winner"] = True
 
         def cmp(x, y):
             if x["accepted"] > y["accepted"]:
