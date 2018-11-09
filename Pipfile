@@ -12,6 +12,7 @@ pymongo = "==3.4.0"
 tornado = "==4.4.2"
 "urllib3" = "==1.23"
 requests = "*"
+schedule = "*"
 
 [dev-packages]
 pylint = "*"

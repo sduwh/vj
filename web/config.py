@@ -1,5 +1,5 @@
 """Web 全局配置"""
-# Host
+# 数据库Host
 host = "localhost"
 
 # Web服务端口

@@ -1,6 +1,9 @@
 """排名模块"""
-import pymongo
 import threading
+import time
+
+import pymongo
+import schedule
 
 # mongodb host
 host = "localhost"
@@ -60,6 +63,10 @@ def match_info(start, num):
 
 
 def match_info_multithreading():
+    """
+    多线程匹配信息
+    :return:
+    """
     start = 0
     num = 100
     total = vj['user'].count()
@@ -90,9 +97,16 @@ def rank():
         cnt += 1
 
 
-def main():
+def task():
     match_info_multithreading()
     rank()
+
+
+def main():
+    schedule.every(1).day.at("01:00").do(task)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 
 if __name__ == '__main__':
