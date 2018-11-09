@@ -35,7 +35,7 @@ class Handler(RequestHandler):
                 'last_ac': (yield self._get_last_ac(username)),
                 'diffiult_ac': (yield self._get_difficult_ac(username)),
                 'achievement': (yield self._get_achievement(username)),
-                'contest_list': (yield self._get_contest_list()),
+                'contest_list': (yield self._get_contest_list(username)),
             })
         else:
             self.send_error(500)
@@ -344,7 +344,6 @@ class Handler(RequestHandler):
                    },
         ret['festival'] = festival
         #
-        # TODO: 比赛排名
         is_first = False
         is_last = False
         for contest_id in self.contest_id_list:
@@ -367,7 +366,7 @@ class Handler(RequestHandler):
         return ret
 
     @gen.coroutine
-    def _get_contest_list(self):
+    def _get_contest_list(self, username):
         """
         :param username:
         :return:
@@ -391,12 +390,19 @@ class Handler(RequestHandler):
         contest_list = []
         for contest_id in self.contest_id_list:
             contest = yield self.settings['database']['contest'].find_one({'_id': contest_id})
+            contest_rank = self._make_rank(contest, (yield self._find_submissions(contest_id)))
+            rank = 1
+            for t in contest_rank:
+                if t['username'] == username:
+                    break
+                rank += 1
             contest_list.append({
                 'title': contest.get('title'),
                 'url': '/contest/entry/{}'.format(str(contest.get('_id'))),
                 'time': '{} ~ {}'.format(contest.get('begintime').strftime('%Y-%m-%d %H:%M:%S'),
                                          contest.get('endtime').strftime('%Y-%m-%d %H:%M:%S')),
-                'description': contest.get('description')
+                'description': contest.get('description'),
+                'rank': rank
             })
         ret = contest_list
         return ret
