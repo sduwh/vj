@@ -111,10 +111,10 @@ class Handler(RequestHandler):
             next['nickname'] = next_user.get('nickname')
             next['total_ac'] = next_user.get('total_ac') if next_user.get('total_ac') else 0
 
-        other_person['first'] = first
-        other_person['last'] = last
-        other_person['prve'] = prve
-        other_person['next'] = next
+        other_person['first'] = first if first else None
+        other_person['last'] = last if last else None
+        other_person['prve'] = prve if prve else None
+        other_person['next'] = next if next else None
         ret['other_person'] = other_person
         return ret
 
@@ -406,7 +406,7 @@ class Handler(RequestHandler):
             })
         # 由新到旧
         ret = sorted(contest_list, key=lambda d:d['time'], reverse=True)
-        return ret
+        return ret if ret else None
 
     @gen.coroutine
     def _get_contest_id_list(self, username):
