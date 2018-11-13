@@ -2,7 +2,7 @@
 
 import time
 import requests
-from .utils import log, get_proxy_ip, delete_proxy
+from .utils import log
 
 class OJ:
     """判题基类"""
