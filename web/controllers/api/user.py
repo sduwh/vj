@@ -85,12 +85,12 @@ class Handler(RequestHandler):
             "rank": 1,
         })
         first['nickname'] = first_user.get('nickname')
-        first['total_ac'] = first_user.get('total_ac')
+        first['total_ac'] = first_user.get('total_ac') if first_user.get('total_ac') else 0
 
         last = {}
         last_user = yield self.settings["database"]["user"].find_one(sort=[('rank', -1)])
         last['nickname'] = last_user.get('nickname')
-        last['total_ac'] = last_user.get('total_ac')
+        last['total_ac'] = last_user.get('total_ac') if last_user.get('total_ac') else 0
 
         # my_rank为None, 1, last_user_rank时处理
         if not my_rank:
@@ -101,7 +101,7 @@ class Handler(RequestHandler):
                 "rank": my_rank - 1,
             })
             prve['nickname'] = prve_user.get('nickname')
-            prve['total_ac'] = prve_user.get('total_ac')
+            prve['total_ac'] = prve_user.get('total_ac') if prve_user.get('total_ac') else 0
 
         next = {}
         if my_rank < last_user.get('rank'):
@@ -109,7 +109,7 @@ class Handler(RequestHandler):
                 "rank": my_rank + 1,
             })
             next['nickname'] = next_user.get('nickname')
-            next['total_ac'] = next_user.get('total_ac')
+            next['total_ac'] = next_user.get('total_ac') if next_user.get('total_ac') else 0
 
         other_person['first'] = first
         other_person['last'] = last
@@ -375,13 +375,15 @@ class Handler(RequestHandler):
                 "title": "",
                 "url": "",
                 "time": "",
-                "description": ""
+                "description": "",
+                "rank": ""
             },
             {
                 "title": "",
                 "url": "",
                 "time": "",
-                "description": ""
+                "description": "",
+                "rank": ""
             }
         ]
         """
