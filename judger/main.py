@@ -33,7 +33,7 @@ def serve():
             # 等待3秒后继续尝试读取
             time.sleep(3)
             continue
-        print("New task")
+        support.utils.log("新任务 soj: {}, sid: {}".format(sub['soj'], sub['sid']))
 
 
         try:
