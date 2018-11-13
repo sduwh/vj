@@ -24,7 +24,7 @@ class Runner(OJ):
             "pid": sid,
             "lang": language,
             "code": code,
-        }, timeout=self.timeout)
+        }, timeout=self.timeout, proxies=self.proxy)
 
     def get_last_runid(self):
         r = self.session.get(BASE_URL + "onlinejudge2/index.php/Home/Solution/status?username=%s" % self.username, timeout=self.timeout)

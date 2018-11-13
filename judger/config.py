@@ -2,6 +2,7 @@
 
 # host
 host = "localhost"
+
 # 数据库
 dbhost = "mongodb://{}:27017/".format(host)
 
@@ -15,7 +16,7 @@ timeout = 3 # s
 time_interval = 0.5 # s
 
 # scylla 代理
-scylla_proxy = {'http': "{}:8081".format(host)}
+scylla_proxy = proxies={'http': 'http://{}:8081'.format(host)}
 
 # 账号信息
 # 用于向OJ提交代码

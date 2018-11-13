@@ -23,7 +23,7 @@ class Runner(OJ):
             "language": language,
             "source": code,
             "encoded": 0,
-        }, timeout=self.timeout)
+        }, timeout=self.timeout, proxies=self.proxy)
 
     def get_last_runid(self):
         r = self.session.get("http://poj.org/status?user_id=%s" % self.username, timeout=self.timeout)
