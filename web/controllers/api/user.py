@@ -33,7 +33,7 @@ class Handler(RequestHandler):
                 'rank': (yield self._get_rank(user)),
                 'first_ac': (yield self._get_first_ac(username)),
                 'last_ac': (yield self._get_last_ac(username)),
-                'diffiult_ac': (yield self._get_difficult_ac(username)),
+                'difficult_ac': (yield self._get_difficult_ac(username)),
                 'achievement': (yield self._get_achievement(username)),
                 'contest_list': (yield self._get_contest_list(username)),
             })
@@ -150,7 +150,7 @@ class Handler(RequestHandler):
             ret['url'] = '/submission/{}'.format(submission_id) if submission_id else None
             ret['code'] = first_ac.get('code')
 
-        return ret
+        return ret if ret else None
 
     @gen.coroutine
     def _get_last_ac(self, username):
@@ -184,14 +184,14 @@ class Handler(RequestHandler):
             ret['url'] = '/submission/{}'.format(submission_id) if submission_id else None
             ret['code'] = last_ac.get('code')
 
-        return ret
+        return ret if ret else None
 
     @gen.coroutine
     def _get_difficult_ac(self, username):
         """
         :param username:
         :return:
-        "diffiult_ac": {
+        "difficult_ac": {
             "none_ac_cnt": "",
             "time": "",
             "title": "",
@@ -240,7 +240,7 @@ class Handler(RequestHandler):
                 ret['url'] = '/submission/{}'.format(submission_id) if submission_id else None
                 ret['code'] = difficult_ac.get('code')
 
-        return ret
+        return ret if ret else None
 
     @gen.coroutine
     def _get_achievement(self, username):
