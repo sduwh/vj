@@ -62,8 +62,11 @@ class Handler(RequestHandler):
 
     @gen.coroutine
     def _add_submission(self, cookies, params):
-        # code = base64.b64decode(params["code"]).decode()
         code = params["code"]
+        lang = params["language"]
+        r0 = yield self.settings['database']['remoteOJs'].find_one({
+            "language": str(lang),
+        })
         r1 = yield self.settings["database"]["submission"].insert_one({
             # User
             "username": cookies["username"],
@@ -74,7 +77,8 @@ class Handler(RequestHandler):
             # Request
             "code": code,
             "codesize": len(code),
-            "language": params["language"],
+            "language": lang,
+            "remote": r0.get("remote"),
             # Response
             "runid": 0,
             "result": "Queueing",
@@ -87,5 +91,5 @@ class Handler(RequestHandler):
             {'username': cookies["username"]},
             {'$set': {'last_submit_time': datetime.datetime.now()}}
         )
-        if not r1.acknowledged or not r2.acknowledged:
+        if not r0 or not r1.acknowledged or not r2.acknowledged :
             raise RuntimeError("Create submission error")

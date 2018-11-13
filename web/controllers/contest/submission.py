@@ -16,10 +16,6 @@ class Handler(RequestHandler):
             if params["page"] < 1 or params["page"] > totalpage:
                 raise RuntimeError("Incorrect page")
             submissions = yield self._find_submissions(filters, params["page"])
-            for item in submissions:
-                cursor = self.settings["database"]["remoteOJs"].find({'soj': item['soj'], 'language': item['language']})
-                for document in (yield cursor.to_list(length=100)):
-                    item['language'] = document['remote']
         except RuntimeError as err:
             self.render("message.html", text=str(err))
         else:
@@ -73,7 +69,7 @@ class Handler(RequestHandler):
             "result": 1,
             "timeused": 1,
             "memoryused": 1,
-            "language": 1,
+            "remote": 1,
             "codesize": 1,
             "submittime": 1,
         }).sort([("submittime", -1)]).skip((page - 1) * self.settings["rows_per_page"]).limit(self.settings["rows_per_page"]).to_list(self.settings["rows_per_page"])

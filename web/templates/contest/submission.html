@@ -55,7 +55,7 @@
                 {% end %}
                 <td>{{ item["timeused"] }} ms</td>
                 <td>{{ item["memoryused"] }} kb</td>
-                <td>{{ item["language"] }}</td>
+                <td>{{ item["remote"] }}</td>
                 <td>{{ item["codesize"] }} bytes</td>
                 <td>{{ item["submittime"].strftime("%Y-%m-%d %H:%M:%S") }}</td>
                 {% if username == "admin" or item["username"] == username or contest["username"] == username %}
