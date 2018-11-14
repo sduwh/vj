@@ -261,8 +261,8 @@ class Handler(RequestHandler):
         :param username:
         :return:
         "achievement": {
-            "first_ac": "boolean",
-            "first_wa": "boolean",
+            "is_ac": "boolean",
+            "is_wa": "boolean",
             "continuous_ac_cnt": "",
             "continuous_none_ac_cnt": "",
             "once_ac_cnt": "",
@@ -280,21 +280,21 @@ class Handler(RequestHandler):
         """
         ret = {}
         #
-        first_ac = yield self.settings['database']['submission'].find_one(
+        is_ac = yield self.settings['database']['submission'].find_one(
             {
                 'username': username,
                 'result': 'Accepted'
-            }, sort=[('submittime', 1)]
+            }
         )
-        ret['first_ac'] = True if first_ac else False
+        ret['is_ac'] = True if is_ac else False
         #
-        first_wa = yield self.settings['database']['submission'].find_one(
+        is_wa = yield self.settings['database']['submission'].find_one(
             {
                 'username': username,
                 'result': 'Accepted'
-            }, sort=[('submittime', 1)]
+            }
         )
-        ret['first_wa'] = True if first_wa else False
+        ret['is_wa'] = True if is_wa else False
         #
         submissions = yield self.settings['database']['submission'].find(
             {
