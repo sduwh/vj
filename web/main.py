@@ -9,7 +9,7 @@ import controllers.index
 import controllers.user.login
 import controllers.user.logout
 import controllers.user.register
-import controllers.user.info
+import controllers.user.record
 import controllers.user.resetpassword
 import controllers.problem.list
 import controllers.problem.detail
@@ -31,7 +31,8 @@ import controllers.signup
 import controllers.signupaccess
 import controllers.signupdelete
 
-import controllers.api.user
+import controllers.api.user.record
+import controllers.api.user.resetpassword
 
 settings = {
     "static_path": config.static_path,
@@ -47,7 +48,7 @@ def main():
         (r"/login", controllers.user.login.Handler),
         (r"/logout", controllers.user.logout.Handler),
         (r"/register", controllers.user.register.Handler),
-        (r"/user", controllers.user.info.Handler),
+        (r"/user", controllers.user.record.Handler),
         (r"/user/resetpassword", controllers.user.resetpassword.Handler),
         (r"/problem", controllers.problem.list.Handler),
         (r"/problem/([a-zA-Z_]+)/([0-9a-zA-Z-/]+)", controllers.problem.detail.Handler),
@@ -67,7 +68,8 @@ def main():
         (r"/signup", controllers.signup.Handler),
         (r"/signup/admin/access", controllers.signupaccess.Handler),
         (r"/signup/admin/delete", controllers.signupdelete.Handler),
-        (r'/api/user', controllers.api.user.Handler),
+        (r'/api/user/record', controllers.api.user.record.Handler),
+        (r'/api/user/resetpassword', controllers.api.user.resetpassword.Handler),
     ],
     **settings).listen(config.port)
     tornado.ioloop.IOLoop.current().start()

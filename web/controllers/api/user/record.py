@@ -26,7 +26,7 @@ class Handler(RequestHandler):
                 'total_wa': user.get('total_wa'),
                 # 处理last_submit_time为None的情况
                 'last_submit_time': user.get('last_submit_time').timestamp() * 1000
-                if user.get('last_submit_time') else None,
+                if user.get('last_submit_time') else datetime.datetime.now().timestamp() * 1000,
             })
         elif params['type'] == 'others':
             self.write({
@@ -61,7 +61,7 @@ class Handler(RequestHandler):
                     "total_wa": "",
                     "rank": ""
                 },
-                "wa_last": {
+                "wa_first": {
                     "nickname": "",
                     "total_ac": "",
                     "total_wa": "",
@@ -93,16 +93,16 @@ class Handler(RequestHandler):
         ac_first['total_wa'] = ac_first_user.get('total_wa') if ac_first_user.get('total_wa') else 0
         ac_first['rank'] = ac_first_user.get('rank') if ac_first_user.get('rank') else 0
 
-        wa_last = {}
-        wa_last_user = yield self.settings["database"]["user"].find_one(sort=[('total_wa', -1)])
-        wa_last['nickname'] = wa_last_user.get('nickname')
-        wa_last['total_ac'] = wa_last_user.get('total_ac') if wa_last_user.get('total_ac') else 0
-        wa_last['total_wa'] = wa_last_user.get('total_wa') if wa_last_user.get('total_wa') else 0
-        wa_last['rank'] = wa_last_user.get('rank') if wa_last_user.get('rank') else 0
+        wa_first = {}
+        wa_first_user = yield self.settings["database"]["user"].find_one(sort=[('total_wa', -1)])
+        wa_first['nickname'] = wa_first_user.get('nickname')
+        wa_first['total_ac'] = wa_first_user.get('total_ac') if wa_first_user.get('total_ac') else 0
+        wa_first['total_wa'] = wa_first_user.get('total_wa') if wa_first_user.get('total_wa') else 0
+        wa_first['rank'] = wa_first_user.get('rank') if wa_first_user.get('rank') else 0
 
         # my_rank为None, 1, last_user_rank时处理
         if not my_rank:
-            my_rank = wa_last_user.get('rank') + 1
+            my_rank = wa_first_user.get('rank') + 1
         prev = {}
         if my_rank != 1:
             prve_user = yield self.settings["database"]["user"].find_one({
@@ -114,7 +114,7 @@ class Handler(RequestHandler):
             prev['rank'] = prve_user.get('rank') if prve_user.get('rank') else 0
 
         next = {}
-        if my_rank < wa_last_user.get('rank'):
+        if my_rank < wa_first_user.get('rank'):
             next_user = yield self.settings["database"]["user"].find_one({
                 "rank": my_rank + 1,
             })
@@ -125,7 +125,7 @@ class Handler(RequestHandler):
 
         ret['other_person'] = {
             'ac_first': ac_first if ac_first else None,
-            'wa_last': wa_last if wa_last else None,
+            'wa_first': wa_first if wa_first else None,
             'prev': prev if prev else None,
             'next': next if next else None,
         }
