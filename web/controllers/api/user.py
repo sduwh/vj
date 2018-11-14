@@ -354,7 +354,7 @@ class Handler(RequestHandler):
                        "valentine": valentine,
                        "newyear": newyear,
                        "single": single
-                   },
+                   }
         ret['festival'] = festival
         #
         is_first = False
