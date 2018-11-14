@@ -51,9 +51,9 @@ def serve():
                     sub["code"])
         except Exception as err:
             # 未知错误
-            support.utils.log("主循环错误: %s" % err)
+            support.utils.log("第{}次主循环错误: %s".format(retry, err))
             retry += 1
-            if retry == 3:
+            if retry == 5:
                 sub["result"] = "Unknown Error"
                 _id = sub.pop("_id")
                 db["submission"].update_one({

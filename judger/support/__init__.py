@@ -4,6 +4,7 @@ import time
 import requests
 from .utils import log
 
+
 class OJ:
     """判题基类"""
 
@@ -23,7 +24,7 @@ class OJ:
         # 登录
         time.sleep(self.time_interval)
         self.login()
-        log("username: {}, session: {}".format(self.username, self.session))
+        log("登陆: username: {}, session: {}".format(self.username, self.session))
 
         # 提交代码前先获取一下最后一次提交的runid
         time.sleep(self.time_interval)
@@ -33,14 +34,14 @@ class OJ:
         # 提交代码
         time.sleep(self.time_interval)
         self.submit(sid, language, code)
-        log("提交 sid: {}, lang: {}".format(sid, language))
+        log("提交: sid: {}, lang: {}, 代理: {}".format(sid, language, self.proxy['http']))
 
         # 循环获取最新runid
         # 直到与提交之前最新的runid不同
         n = 0
         while True:
             # 获取最新的runid
-            time.sleep(self.time_interval)
+            time.sleep(self.time_interval * 2)
             runid = self.get_last_runid()
 
             # 如果和runid_old不同 说明提交成功 该runid即本次提交的runid
@@ -52,7 +53,7 @@ class OJ:
 
             # 如果获取n次仍没有发现有新的提交记录出现
             # 说明提交失败
-            if n == 10:
+            if n == 5:
                 raise SubmitError("重试超过{}次".format(n))
 
         log("获得最新的runid: {}".format(runid))
