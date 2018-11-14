@@ -34,7 +34,7 @@ class OJ:
         # 提交代码
         time.sleep(self.time_interval)
         self.submit(sid, language, code)
-        log("提交: sid: {}, lang: {}, 代理: {}".format(sid, language, self.proxy['http']))
+        log("提交: sid: {}, lang: {}".format(sid, language))
 
         # 循环获取最新runid
         # 直到与提交之前最新的runid不同
