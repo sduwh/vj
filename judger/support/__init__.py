@@ -53,7 +53,7 @@ class OJ:
 
             # 如果获取n次仍没有发现有新的提交记录出现
             # 说明提交失败
-            if n == 5:
+            if n == 10:
                 raise SubmitError("重试超过{}次".format(n))
 
         log("获得最新的runid: {}".format(runid))
