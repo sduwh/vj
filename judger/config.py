@@ -10,7 +10,7 @@ dbhost = "mongodb://{}:27017/".format(host)
 dbname = "vj"
 
 # 超时重试
-timeout = 3 # s
+timeout = 10 # s
 
 # 页面访问间隔
 time_interval = 0.5 # s
