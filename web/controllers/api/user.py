@@ -67,7 +67,7 @@ class Handler(RequestHandler):
                     "total_wa": "",
                     "rank": ""
                 },
-                "prve": {
+                "prev": {
                     "nickname": "",
                     "total_ac": "",
                     "total_wa": "",
@@ -103,15 +103,15 @@ class Handler(RequestHandler):
         # my_rank为None, 1, last_user_rank时处理
         if not my_rank:
             my_rank = wa_last_user.get('rank') + 1
-        prve = {}
+        prev = {}
         if my_rank != 1:
             prve_user = yield self.settings["database"]["user"].find_one({
                 "rank": my_rank - 1,
             })
-            prve['nickname'] = prve_user.get('nickname')
-            prve['total_ac'] = prve_user.get('total_ac') if prve_user.get('total_ac') else 0
-            prve['total_wa'] = prve_user.get('total_wa') if prve_user.get('total_wa') else 0
-            prve['rank'] = prve_user.get('rank') if prve_user.get('rank') else 0
+            prev['nickname'] = prve_user.get('nickname')
+            prev['total_ac'] = prve_user.get('total_ac') if prve_user.get('total_ac') else 0
+            prev['total_wa'] = prve_user.get('total_wa') if prve_user.get('total_wa') else 0
+            prev['rank'] = prve_user.get('rank') if prve_user.get('rank') else 0
 
         next = {}
         if my_rank < wa_last_user.get('rank'):
@@ -126,7 +126,7 @@ class Handler(RequestHandler):
         ret['other_person'] = {
             'ac_first': ac_first if ac_first else None,
             'wa_last': wa_last if wa_last else None,
-            'prve': prve if prve else None,
+            'prev': prev if prev else None,
             'next': next if next else None,
         }
         return ret
