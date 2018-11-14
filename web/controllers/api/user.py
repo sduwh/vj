@@ -55,21 +55,29 @@ class Handler(RequestHandler):
         "rank": {
             "my_rank": "",
             "other_person": {
-                "first": {
+                "ac_first": {
                     "nickname": "",
-                    "total_ac": ""
+                    "total_ac": "",
+                    "total_wa": "",
+                    "rank": ""
                 },
-                "last": {
+                "wa_last": {
                     "nickname": "",
-                    "total_ac": ""
+                    "total_ac": "",
+                    "total_wa": "",
+                    "rank": ""
                 },
                 "prve": {
                     "nickname": "",
-                    "total_ac": ""
+                    "total_ac": "",
+                    "total_wa": "",
+                    "rank": ""
                 },
                 "next": {
                     "nickname": "",
-                    "total_ac": ""
+                    "total_ac": "",
+                    "total_wa": "",
+                    "rank": ""
                 }
             }
         }
@@ -78,23 +86,23 @@ class Handler(RequestHandler):
         my_rank = user.get('rank')
         ret['my_rank'] = my_rank
 
-        other_person = {}
+        ac_first = {}
+        ac_first_user = yield self.settings["database"]["user"].find_one({"rank": 1})
+        ac_first['nickname'] = ac_first_user.get('nickname')
+        ac_first['total_ac'] = ac_first_user.get('total_ac') if ac_first_user.get('total_ac') else 0
+        ac_first['total_wa'] = ac_first_user.get('total_wa') if ac_first_user.get('total_wa') else 0
+        ac_first['rank'] = ac_first_user.get('rank') if ac_first_user.get('rank') else 0
 
-        first = {}
-        first_user = yield self.settings["database"]["user"].find_one({
-            "rank": 1,
-        })
-        first['nickname'] = first_user.get('nickname')
-        first['total_ac'] = first_user.get('total_ac') if first_user.get('total_ac') else 0
-
-        last = {}
-        last_user = yield self.settings["database"]["user"].find_one(sort=[('rank', -1)])
-        last['nickname'] = last_user.get('nickname')
-        last['total_ac'] = last_user.get('total_ac') if last_user.get('total_ac') else 0
+        wa_last = {}
+        wa_last_user = yield self.settings["database"]["user"].find_one(sort=[('total_wa', -1)])
+        wa_last['nickname'] = wa_last_user.get('nickname')
+        wa_last['total_ac'] = wa_last_user.get('total_ac') if wa_last_user.get('total_ac') else 0
+        wa_last['total_wa'] = wa_last_user.get('total_wa') if wa_last_user.get('total_wa') else 0
+        wa_last['rank'] = wa_last_user.get('rank') if wa_last_user.get('rank') else 0
 
         # my_rank为None, 1, last_user_rank时处理
         if not my_rank:
-            my_rank = last_user.get('rank') + 1
+            my_rank = wa_last_user.get('rank') + 1
         prve = {}
         if my_rank != 1:
             prve_user = yield self.settings["database"]["user"].find_one({
@@ -102,20 +110,25 @@ class Handler(RequestHandler):
             })
             prve['nickname'] = prve_user.get('nickname')
             prve['total_ac'] = prve_user.get('total_ac') if prve_user.get('total_ac') else 0
+            prve['total_wa'] = prve_user.get('total_wa') if prve_user.get('total_wa') else 0
+            prve['rank'] = prve_user.get('rank') if prve_user.get('rank') else 0
 
         next = {}
-        if my_rank < last_user.get('rank'):
+        if my_rank < wa_last_user.get('rank'):
             next_user = yield self.settings["database"]["user"].find_one({
                 "rank": my_rank + 1,
             })
             next['nickname'] = next_user.get('nickname')
             next['total_ac'] = next_user.get('total_ac') if next_user.get('total_ac') else 0
+            next['total_wa'] = next_user.get('total_wa') if next_user.get('total_wa') else 0
+            next['rank'] = next_user.get('rank') if next_user.get('rank') else 0
 
-        other_person['first'] = first if first else None
-        other_person['last'] = last if last else None
-        other_person['prve'] = prve if prve else None
-        other_person['next'] = next if next else None
-        ret['other_person'] = other_person
+        ret['other_person'] = {
+            'ac_first': ac_first if ac_first else None,
+            'wa_last': wa_last if wa_last else None,
+            'prve': prve if prve else None,
+            'next': next if next else None,
+        }
         return ret
 
     @gen.coroutine
@@ -405,7 +418,7 @@ class Handler(RequestHandler):
                 'rank': rank
             })
         # 由新到旧
-        ret = sorted(contest_list, key=lambda d:d['time'], reverse=True)
+        ret = sorted(contest_list, key=lambda d: d['time'], reverse=True)
         return ret if ret else None
 
     @gen.coroutine
