@@ -51,7 +51,7 @@ def serve():
                     sub["code"])
         except Exception as err:
             # 未知错误
-            print("Unknown error: %s" % err)
+            support.utils.log("主循环错误: %s" % err)
             retry += 1
             if retry == 3:
                 sub["result"] = "Unknown Error"
