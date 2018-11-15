@@ -884,7 +884,7 @@
             $.ajax({
                 'type': 'POST',
                 'data': `password_old=${oldPas}&password_new=${newPas}`,
-                'url': common.indexData.resetURL,
+                'url': common.resetURL,
                 'dataType': 'text',
                 'success': function (data) {
                     resetCb(data);
