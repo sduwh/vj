@@ -106,7 +106,7 @@
         'achievements': {
             // is_ac
             'isAc': {
-                'title': 'ACCEPT',
+                'title': 'ACCEPT',
                 'desc': '在平台AC至少一题'
             },
 
