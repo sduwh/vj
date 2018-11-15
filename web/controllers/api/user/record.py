@@ -24,9 +24,9 @@ class Handler(RequestHandler):
                 'total_sub': user.get('total_sub'),
                 'total_ac': user.get('total_ac'),
                 'total_wa': user.get('total_wa'),
-                # 处理last_submit_time为None的情况
+                # 处理last_submit_time为None的情况 返回-1
                 'last_submit_time': user.get('last_submit_time').timestamp() * 1000
-                if user.get('last_submit_time') else datetime.datetime.now().timestamp() * 1000,
+                if user.get('last_submit_time') else -1,
             })
         elif params['type'] == 'others':
             self.write({

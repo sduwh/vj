@@ -48,7 +48,7 @@ def main():
         (r"/login", controllers.user.login.Handler),
         (r"/logout", controllers.user.logout.Handler),
         (r"/register", controllers.user.register.Handler),
-        (r"/user", controllers.user.record.Handler),
+        (r"/user/?", controllers.user.record.Handler),
         # (r"/user/resetpassword", controllers.user.resetpassword.Handler),
         (r"/problem", controllers.problem.list.Handler),
         (r"/problem/([a-zA-Z_]+)/([0-9a-zA-Z-/]+)", controllers.problem.detail.Handler),

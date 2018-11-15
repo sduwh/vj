@@ -5,8 +5,8 @@
         'pageName': ['instruction-page', 'first-ac-page', 'last-ac-page', 'difficult-ac-page', 'contest-page', 'rank-page', 'achievement-page', 'time-page'],
         'indexURL': '/api/user/record',
         'otherURL': '/api/user/record',
-        'logoutURL': '',
-        'resetURL': '',
+        // 'logoutURL': '../../controllers/logout.json',
+        'resetURL': '/api/user/resetpassword',
         'improveProblemURL': 'http://acm.wh.sdu.edu.cn:8000',
         'improveContestURL': 'http://acm.wh.sdu.edu.cn:8000',
         'indexData': null,
@@ -90,7 +90,11 @@
     // 与 rank-page 页面相关的变量集合
     var rankPageVar = {
         'dom': {
-            'li': $('.wrapper .rank-page .info .container .cube-wrap .cube .cube-face ul li')
+            'li': $('.wrapper .rank-page .info .container .cube-wrap .cube .cube-face ul li'),
+            'prevUl': $('.wrapper .rank-page .info .container .cube-wrap .cube .top ul'),
+            'nextUl': $('.wrapper .rank-page .info .container .cube-wrap .cube .bottom ul'),
+            'prevHint': $('.wrapper .rank-page .info .container .cube-wrap .cube .top .hint'),
+            'nextHint': $('.wrapper .rank-page .info .container .cube-wrap .cube .bottom .hint')
         }
     };
 
@@ -232,9 +236,26 @@
     // 与 function-bar 相关的变量集合
     var fnBarVar = {
         'dom': {
-            'logout': $('.wrapper .function-bar .scal-wrap .logouot a'),
-            'reset': $('.wrapper .function-bar .scal-wrap .reset a')
-        }
+            'logout': $('.wrapper .function-bar .scal-wrap .logout a'),
+            'reset': $('.wrapper .function-bar .scal-wrap .reset a'),
+            'alertWrap': $('.wrapper .alert-wrapper'),
+            'alertBox': $('.wrapper .alert-wrapper .alert-box'),
+            'correct': $('.wrapper .alert-wrapper .correct'),
+            'oldPas': $('.wrapper .alert-wrapper .alert-box .old-password input'),
+            'newPas': $('.wrapper .alert-wrapper .alert-box .new-password input'),
+            'newPasRe': $('.wrapper .alert-wrapper .alert-box .new-password-repeat input'),
+            'oldPasHint': $('.wrapper .alert-wrapper .alert-box .old-password .hint'),
+            'newPasHint': $('.wrapper .alert-wrapper .alert-box .new-password .hint'),
+            'rePasHint': $('.wrapper .alert-wrapper .alert-box .new-password-repeat .hint'),
+            'confirmBtn': $('.wrapper .alert-wrapper .alert-box .btn .confirm'),
+            'cancel': $('.wrapper .alert-wrapper .alert-box .btn .cancel')
+        },
+        'oldPasHintText_1': '原密码错误!',
+        'oldPasHintText_2': '请输入原密码!',
+        'newPasHintText_1': '两次输入的密码不一致!',
+        'newPasHintText_2': '请输入新密码!',
+        'newPasReHintText_1': '两次密码输入不一致!',
+        'newPasReHintText_2': '请输入确认密码!'
     }
 
     // 页面初始化
@@ -245,6 +266,7 @@
         // getOtherData();
 
         // logout();
+        reset();
     }
 
     // 获取首页数据后，将数据保存
@@ -546,16 +568,26 @@
         rankPageVar.dom.li[14].innerHTML = 'wa: ' + common.otherData.rank.other_person.wa_first.total_wa;
 
         // 前一名
-        rankPageVar.dom.li[16].innerHTML = 'nickname: ' + common.otherData.rank.other_person.prev.nickname;
-        rankPageVar.dom.li[17].innerHTML = 'rank: ' + common.otherData.rank.other_person.prev.rank;
-        rankPageVar.dom.li[18].innerHTML = 'accept: ' + common.otherData.rank.other_person.prev.total_ac;
-        rankPageVar.dom.li[19].innerHTML = 'wa: ' + common.otherData.rank.other_person.prev.total_wa;
+        if (common.otherData.rank.my_rank == 1 || common.otherData.rank.other_person.prev == null) {
+            rankPageVar.dom.prevHint.css('display', 'block');
+        } else {
+            rankPageVar.dom.prevUl.css('display', 'block');
+            rankPageVar.dom.li[16].innerHTML = 'nickname: ' + common.otherData.rank.other_person.prev.nickname;
+            rankPageVar.dom.li[17].innerHTML = 'rank: ' + common.otherData.rank.other_person.prev.rank;
+            rankPageVar.dom.li[18].innerHTML = 'accept: ' + common.otherData.rank.other_person.prev.total_ac;
+            rankPageVar.dom.li[19].innerHTML = 'wa: ' + common.otherData.rank.other_person.prev.total_wa;
+        }
 
         // 后一名
-        rankPageVar.dom.li[21].innerHTML = 'nickname: ' + common.otherData.rank.other_person.next.nickname;
-        rankPageVar.dom.li[22].innerHTML = 'rank: ' + common.otherData.rank.other_person.next.rank;
-        rankPageVar.dom.li[23].innerHTML = 'accept: ' + common.otherData.rank.other_person.next.total_ac;
-        rankPageVar.dom.li[24].innerHTML = 'wa: ' + common.otherData.rank.other_person.next.total_wa;
+        if (common.otherData.rank.other_person.next == null) {
+            rankPageVar.dom.nextHint.css('display', 'block');
+        } else {
+            rankPageVar.dom.nextUl.css('display', 'block');
+            rankPageVar.dom.li[21].innerHTML = 'nickname: ' + common.otherData.rank.other_person.next.nickname;
+            rankPageVar.dom.li[22].innerHTML = 'rank: ' + common.otherData.rank.other_person.next.rank;
+            rankPageVar.dom.li[23].innerHTML = 'accept: ' + common.otherData.rank.other_person.next.total_ac;
+            rankPageVar.dom.li[24].innerHTML = 'wa: ' + common.otherData.rank.other_person.next.total_wa;
+        }
     }
 
     // 渲染 achievement-page
@@ -651,23 +683,30 @@
     }
 
     // 渲染 time-page
-    function renderTimePage() {
+      function renderTimePage() {
         var ONEDAY = 86400000;
         var today = new Date().getTime();
         var lastday = common.indexData.last_submit_time;
-        var between = Math.floor((today - lastday) / ONEDAY);
+        var between = '';
         var color = '';
         var colorInfo = ['#5DAC81', '#FFC408', '#CB1B45'];
-        if (between < 5) {
-            color = colorInfo[0];
-        } else if (between < 15) {
-            color = colorInfo[1];
-        } else {
+        if (lastday === -1) {
+            between = '∞';
             color = colorInfo[2];
+        } else {
+            between = Math.floor((today - lastday) / ONEDAY);
+            if (between < 5) {
+                color = colorInfo[0];
+            } else if (between < 15) {
+                color = colorInfo[1];
+            } else {
+                color = colorInfo[2];
+            }
         }
         timePageVar.dom.dayText.html(between);
         timePageVar.dom.dayText.css('color', color);
     }
+
 
     // 调用渲染页面的函数
     function renderOtherPage() {
@@ -681,9 +720,193 @@
     }
 
     // logout
-    // function logout() {
-    //     fnBarVar.dom.
-    // }
+    function logout() {
+        fnBarVar.dom.logout.on('click', function (e) {
+            e.preventDefault();
+            requestLogout();
+        });
+    }
+
+    // 请求后台执行 logout 操作
+    function requestLogout() {
+        $.ajax({
+            'type': 'GET',
+            'data': '',
+            'url': common.logoutURL,
+            // 'dataType': 'json',
+            // 'success': function () {
+            //     console.log('logout');
+            // }
+        });
+    }
+
+    // reset
+    function reset() {
+        // 点击 reset 弹出交互弹层
+        fnBarVar.dom.reset.on('click', function (e) {
+            // 阻止 a 标签的默认事件
+            e.preventDefault();
+            fnBarVar.dom.alertWrap.css('display', 'block');
+            fnBarVar.dom.alertBox.css('display', 'block');
+            // 原密码项自动聚焦
+            fnBarVar.dom.oldPas.focus();
+            // 所有提示内容清空，因为点击取消时候，input 要响应提示的事件，又要响应退出的事件，所以在退出前提示事件可能还没有完成，所以如果把这个过程放在退出时完成不行
+            fnBarVar.dom.oldPasHint.val('');
+            fnBarVar.dom.newPasHint.val('');
+            fnBarVar.dom.rePasHint.val('');
+            fnBarVar.dom.oldPasHint.css('display', 'none');
+            fnBarVar.dom.newPasHint.css('display', 'none');
+            fnBarVar.dom.rePasHint.css('display', 'none');
+            // 所有表单内容清空过，这个也不能放在点击取消事件时清空的原因是，弹层消失的方式不止点击取消一种，还有修改成功时的自动消失
+            fnBarVar.dom.oldPas.val('');
+            fnBarVar.dom.newPas.val('');
+            fnBarVar.dom.newPasRe.val('');
+        });
+
+        // 点击 取消 隐藏 reset 交互层
+        fnBarVar.dom.cancel.on('click', function () {
+            // 所有表单原有值清空
+            fnBarVar.dom.alertWrap.css('display', 'none');
+        });
+
+        // rePas 失去焦点时
+        // 1. 提示不能为空
+        // 2. 提示两次密码应该一致
+        fnBarVar.dom.newPasRe
+        .on('blur', function () {
+            var newPas = fnBarVar.dom.newPas.val();
+            var newPasRe = $(this).val();
+            if (!newPasRe) {
+                fnBarVar.dom.rePasHint.html(fnBarVar.newPasReHintText_2);
+                fnBarVar.dom.rePasHint.css('display', 'block');
+            } else if (newPas !== newPasRe) {
+                // 密码不相同，提示用户
+                fnBarVar.dom.rePasHint.html(fnBarVar.newPasReHintText_1);
+                fnBarVar.dom.rePasHint.css('display', 'block');
+                // 将另一处的密码不相同的提示关掉（因为另一处有可能有提示，有可能没有提示）
+                fnBarVar.dom.newPasHint.html('');
+                fnBarVar.dom.newPasHint.css('display', 'none');
+            } else if (newPas === newPasRe) {
+                // 密码相同后，把另一处有可能存在的错误提示关掉
+                fnBarVar.dom.newPasHint.html('');
+                fnBarVar.dom.newPasHint.css('display', 'none');
+            }
+        })
+        .on('keyup', function (event) {
+            // 给充值密码的 input 也就是最后一个 input 绑定 enter 事件，按下回车时也可提交
+            if (event.keyCode == '13') {
+                // 要先失去焦点，判断是否为空或者两次密码是否一致
+                $(this).blur();
+                handleBtn();
+            }
+        });
+
+        // rePas 聚焦如果有错误提示就隐藏错误提示，并清空之前输入的内容
+        fnBarVar.dom.newPasRe.on('focus', function () {
+            if (fnBarVar.dom.rePasHint.css('display') === 'block') {
+                $(this).val('');
+                fnBarVar.dom.rePasHint.html('');
+                fnBarVar.dom.rePasHint.css('display', 'none');
+            }
+        });
+
+        // newPas 失去焦点时
+        // 1. 提示不能为空
+        // 2. 提示两次输入应该一致
+        fnBarVar.dom.newPas.on('blur', function () {
+            var newPas = $(this).val();
+            var newPasRe = fnBarVar.dom.newPasRe.val();
+            if (!newPas) {
+                fnBarVar.dom.newPasHint.html(fnBarVar.newPasHintText_2);
+                fnBarVar.dom.newPasHint.css('display', 'block');
+            } else if (newPasRe && newPas !== newPasRe) {
+                // 如果重复密码不为空，就检测两次密码是否一致，如果为空，可能用户还没有输入重复密码，所以不检测
+                fnBarVar.dom.newPasHint.html(fnBarVar.newPasHintText_1);
+                fnBarVar.dom.newPasHint.css('display', 'block');
+                // 如果检测到两次密码不一致，则将重复密码的提示隐藏掉，因为如果这里也提示那里也提示，会出现两个密码不一致，用户不知道该改哪一个密码，所以原则就是在哪里出错，在哪里提示，把另一处的提示隐藏掉
+                fnBarVar.dom.rePasHint.html('');
+                fnBarVar.dom.rePasHint.css('display', 'none');
+            } else if (newPasRe && newPas === newPasRe) {
+                // 如果两次密码相等了，就把另一处的密码不一致的提示信息关掉
+                fnBarVar.dom.rePasHint.html('');
+                fnBarVar.dom.rePasHint.css('display', 'none');
+            }
+        });
+
+        // newPas 聚焦时如果有错误提示就隐藏错误提示，并清空原油内容
+        fnBarVar.dom.newPas.on('focus', function () {
+            if (fnBarVar.dom.newPasHint.css('display') === 'block') {
+                $(this).val('');
+                fnBarVar.dom.newPasHint.html('');
+                fnBarVar.dom.newPasHint.css('display', 'block');
+            }
+        });
+
+        // oldPas 失去焦点时，检测是否为空
+        fnBarVar.dom.oldPas.on('blur', function () {
+            var oldPas = $(this).val();
+            if (!oldPas) {
+                fnBarVar.dom.oldPasHint.html(fnBarVar.oldPasHintText_2);
+                fnBarVar.dom.oldPasHint.css('display', 'block');
+            }
+        });
+
+        // oldPas 聚焦时，如果有错误提示就隐藏错误提示，并清空原有内容
+        fnBarVar.dom.oldPas.on('focus', function () {
+            // 如果有错误提示，清空原有内容，如果没有，则不请空
+            if (fnBarVar.dom.oldPasHint.css('display') === 'block') {
+                $(this).val('');
+                fnBarVar.dom.oldPasHint.html('');
+                fnBarVar.dom.oldPasHint.css('display', 'none');
+            }
+        });
+
+        // 点击确定时
+        fnBarVar.dom.confirmBtn.on('click', function () {
+            handleBtn();
+        });
+
+        // 如果 input 都不为空，且密码一致才能请求
+        function handleBtn() {
+            var oldPas = fnBarVar.dom.oldPas.val(),
+                newPas = fnBarVar.dom.newPas.val(),
+                newPasRe = fnBarVar.dom.newPasRe.val(),
+                oldPasHint = fnBarVar.dom.oldPasHint.css('display') === 'none' ? true : false,
+                newPasHint = fnBarVar.dom.newPasHint.css('display') === 'none' ? true : false,
+                rePasHint = fnBarVar.dom.rePasHint.css('display') === 'none' ? true : false;
+            if (oldPas && newPas && newPasRe && oldPasHint && newPasHint && rePasHint) {
+                requestResetPas(oldPas, newPas);
+            }
+        }
+
+        // 发送 reset 请求
+        function requestResetPas(oldPas, newPas) {
+            $.ajax({
+                'type': 'POST',
+                'data': `password_old=${oldPas}&password_new=${newPas}`,
+                'url': common.indexData.resetURL,
+                'dataType': 'text',
+                'success': function (data) {
+                    resetCb(data);
+                }
+            });
+        }
+
+        // 响应 reset 请求
+        function resetCb(data) {
+            // data = 0;
+            if (data === '0') {
+                fnBarVar.dom.alertBox.fadeOut(500);
+                fnBarVar.dom.correct.fadeIn(500).delay(1200).fadeOut(500, function () {
+                    fnBarVar.dom.alertWrap.fadeOut(500);
+                });
+            } else {
+                fnBarVar.dom.oldPasHint.html(fnBarVar.oldPasHintText_1);
+                fnBarVar.dom.oldPasHint.css('display', 'block');
+            }
+        }
+
+    }
 
     init();
 })();

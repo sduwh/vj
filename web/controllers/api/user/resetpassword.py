@@ -7,7 +7,10 @@ from tornado import gen
 class Handler(RequestHandler):
     @gen.coroutine
     def post(self):
-        """修改密码"""
+        """
+        修改密码
+        :return: if ok: '0' else '1'
+        """
         try:
             username = self._get_cookie_username()
             params = self._get_params()
