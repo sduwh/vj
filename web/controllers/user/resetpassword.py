@@ -1,3 +1,4 @@
+# 被api取代
 import hashlib
 
 from tornado.web import RequestHandler

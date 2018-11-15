@@ -3,6 +3,7 @@ import hashlib
 from tornado.web import RequestHandler
 from tornado import gen
 
+
 class Handler(RequestHandler):
     @gen.coroutine
     def post(self):
@@ -13,10 +14,10 @@ class Handler(RequestHandler):
             password_indb = yield self._find_user_password(username)
             self._check_password(params["password_old"], password_indb)
             yield self._update_password(username, params["password_new"])
-        except RuntimeError as err:
-            self.render("message.html", text=str(err))
+        except RuntimeError:
+            self.write(str(1))
         else:
-            self.render("message.html", text="OK")
+            self.write(str(0))
 
     def _get_cookie_username(self):
         username = self.get_secure_cookie("username")

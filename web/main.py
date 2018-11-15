@@ -10,7 +10,7 @@ import controllers.user.login
 import controllers.user.logout
 import controllers.user.register
 import controllers.user.record
-import controllers.user.resetpassword
+# import controllers.user.resetpassword
 import controllers.problem.list
 import controllers.problem.detail
 import controllers.problem.submit
@@ -49,7 +49,7 @@ def main():
         (r"/logout", controllers.user.logout.Handler),
         (r"/register", controllers.user.register.Handler),
         (r"/user", controllers.user.record.Handler),
-        (r"/user/resetpassword", controllers.user.resetpassword.Handler),
+        # (r"/user/resetpassword", controllers.user.resetpassword.Handler),
         (r"/problem", controllers.problem.list.Handler),
         (r"/problem/([a-zA-Z_]+)/([0-9a-zA-Z-/]+)", controllers.problem.detail.Handler),
         (r"/problem/submit", controllers.problem.submit.Handler),
