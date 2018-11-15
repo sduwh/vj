@@ -16,10 +16,13 @@ class Handler(RequestHandler):
             self.render("message.html", text=str(err))
         else:
             username = self._get_cookie_username()
-            cursor = self.settings["database"]["OJ"].find()
-            ojs = []
-            for document in (yield cursor.to_list(length=100)):
-                ojs.append({"oj": document['soj']})
+            # cursor = self.settings["database"]["OJ"].find()
+            ojs = [
+                {'oj': 'HDU'},
+                {'oj': 'POJ'},
+            ]
+            # for document in (yield cursor.to_list(length=100)):
+            #     ojs.append({"oj": document['soj']})
             self.render("submission/list.html", submissions=submissions, params=params, totalpage=totalpage, username=username, ojs=ojs)
 
     def _get_params(self):
