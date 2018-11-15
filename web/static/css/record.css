@@ -9,26 +9,12 @@
 @font-face {
     font-family: 'monaco';
     src: url('../../static/font/Monaco.ttf');
-    src:local('☺'),
-		url('../../static/font/Monaco.ttf') format('truetype'),
-		url('../../static/font/Monaco.eot?#iefix') format('embedded-opentype'),
-		url('../../static/font/Monaco.woff') format('woff'),
-		url('../../static/font/Monaco.svg#webfontOTINA1xY') format('svg');
-		font-weight:normal;
-		font-style:normal;
 }
 
 /* 汉仪家书简体 */
 @font-face {
     font-family: 'hanyi';
     src: url('../../static/font/hanyi.ttf');
-    src:local('☺'),
-		url('../../static/font/hanyi.ttf') format('truetype'),
-		url('../../static/font/hanyi.eot?#iefix') format('embedded-opentype'),
-		url('../../static/font/hanyi.woff') format('woff'),
-		url('../../static/font/hanyi.svg#webfontOTINA1xY') format('svg');
-		font-weight:normal;
-		font-style:normal;
 }
 
 /* 下滑箭头闪烁的动画 */
