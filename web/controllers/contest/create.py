@@ -43,8 +43,9 @@ class Handler(RequestHandler):
 
     def _parse_problems(self, problems_str):
         problems = []
-        for p in problems_str.split('\t\r\n'):
-            match = re.findall(r"([A-Z]+)\-(\d+)\s\|(.*)", p)
+        pattern = re.compile(r'\s+')
+        for p in pattern.split(problems_str):
+            match = re.findall(r"([A-Z]+)\-(\d+).+?\|(.*)", p)
             if not match:
                 raise RuntimeError("Problem format error")
             problems.append({
