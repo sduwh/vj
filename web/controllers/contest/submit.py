@@ -92,6 +92,7 @@ class Handler(RequestHandler):
         code = params["code"]
         lang = params["language"]
         r0 = yield self.settings['database']['remoteOJs'].find_one({
+            "soj": problem["soj"],
             "language": str(lang),
         })
         r1 = yield self.settings["database"]["submission"].insert_one({
