@@ -87,24 +87,29 @@ class Handler(RequestHandler):
         return params
 
     @gen.coroutine
-    def _add_submission(self, cookies, params):
+    def _add_submission(self, contest_id, cookies, params, problem):
+        # code = base64.b64decode(params["code"]).decode()
         code = params["code"]
         lang = params["language"]
         r0 = yield self.settings['database']['remoteOJs'].find_one({
             "language": str(lang),
         })
         r1 = yield self.settings["database"]["submission"].insert_one({
+            # Contest
+            "contest_id": ObjectId(contest_id),
             # User
             "username": cookies["username"],
             "nickname": cookies["nickname"],
+            "ip": self.request.remote_ip,
             # Problem
-            "soj": params["soj"],
-            "sid": params["sid"],
+            "n": params["n"],
+            "soj": problem["soj"],
+            "sid": problem["sid"],
             # Request
             "code": code,
             "codesize": len(code),
             "language": lang,
-            "remote": r0.get("remote"),
+            "remote": r0['remote'],
             # Response
             "runid": 0,
             "result": "Queueing",
@@ -119,4 +124,3 @@ class Handler(RequestHandler):
         )
         if not r0 or not r1.acknowledged or not r2.acknowledged:
             raise RuntimeError("Create submission error")
-
