@@ -62,6 +62,4 @@ class Runner(OJ):
         r = self.session.get("http://poj.org/showcompileinfo?solution_id=" + str(runid), timeout=self.timeout)
         r.encoding = self.encoding
         match = re.findall(r"<pre>([.\s\S]+?)</pre>", r.text)
-        if not match:
-            raise NoMatchError("errorinfo")
-        return match[0]
+        return match[0] if match else ""
