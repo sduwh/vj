@@ -351,10 +351,10 @@ class Handler(RequestHandler):
             if submittime.month == 11 and submittime.day == 11:
                 single = True
         festival = {
-                       "valentine": valentine,
-                       "newyear": newyear,
-                       "single": single
-                   }
+            "valentine": valentine,
+            "newyear": newyear,
+            "single": single
+        }
         ret['festival'] = festival
         #
         is_first = False
@@ -492,8 +492,10 @@ class Handler(RequestHandler):
             if sub["result"] == "Accepted":
                 # 如果这道题尚未ac 记录首次ac时间 设置accepted为True
                 if None == rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"]:
-                    rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"] = sub["submittime"] - contest[
-                        "begintime"]
+                    rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"] = \
+                        sub["submittime"] - contest["begintime"]
+            if sub["result"] == "Compilation Error" or sub["result"] == "Compile Error":
+                continue
             else:
                 # 只有这道题尚未ac的时候才算入错误数
                 if None == rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"]:

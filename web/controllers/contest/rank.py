@@ -81,6 +81,8 @@ class Handler(RequestHandler):
                 # 如果这道题尚未ac 记录首次ac时间 设置accepted为True
                 if None == rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"]:
                     rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"] = sub["submittime"] - contest["begintime"]
+            if sub["result"] == "Compilation Error" or sub["result"] == "Compile Error":
+                continue
             else:
                 # 只有这道题尚未ac的时候才算入错误数
                 if None == rank[sub["username"]]["problems"][sub["n"]]["first_accepted_time"]:

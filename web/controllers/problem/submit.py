@@ -1,5 +1,4 @@
 import datetime
-import base64
 
 from tornado.web import RequestHandler
 from tornado import gen

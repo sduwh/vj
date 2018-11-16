@@ -42,7 +42,7 @@ class Handler(RequestHandler):
 
     def _make_filters(self, params):
         return {
-            "contest_id": {"$exists": False},
+            # "contest_id": {"$exists": False},
             "soj": params["soj"] if params["soj"] else {"$regex": r".*"},
             "sid": params["sid"] if params["sid"] else {"$ne": 0},
             "result": {"$regex": params["result"]} if params["result"] else {"$regex": r".*"},
