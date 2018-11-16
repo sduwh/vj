@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 
 import config
-from config import print_error, print_info, get_proxy, delete_proxy
+from config import print_error, print_info
 
 # 链接数据库
 db = pymongo.MongoClient(config.dbhost)[config.dbname]
@@ -85,17 +85,12 @@ def get_problem_lists(oj_name):
     while True:
         config.form_data['start'] = str(index * config.problem_num_once)
         print_info("当前 oj: %s, 开始题号: %s" % (oj_name, config.form_data['start']))
-        ip = get_proxy()
-        proxies = {
-            'http': 'http://{}'.format(ip),
-        }
         try:
             problem_response = requests.post(url=config.problem_api_url, headers=config.headers, data=config.form_data,
-                                             proxies=proxies, timeout=config.timeout)
+                                             proxies=config.proxy, timeout=config.timeout)
             problems_list = json.loads(problem_response.text)['data']
         except Exception as e:
             print_error("获取题目列表时 requests 出错", e)
-            delete_proxy(ip)
             time.sleep(config.timeout)
             continue
         if len(problems_list) == 0:
@@ -108,17 +103,12 @@ def get_problem_lists(oj_name):
 def get_problem_detail(detail_url):
     """获得 detail_url 对应题目的 response"""
     while True:
-        ip = get_proxy()
-        proxies = {
-            'http': 'http://{}'.format(ip),
-        }
         try:
             response = requests.get(
-                url=detail_url, proxies=proxies, timeout=config.timeout)
+                url=detail_url, proxies=config.proxy, timeout=config.timeout)
         except Exception as e:
             # 有任何未知错误发生（网络超时等）都进行retry
             print_error("获取题目详细信息时 requests 出错", e)
-            delete_proxy(ip)
             time.sleep(config.timeout)
             continue
         break

@@ -43,11 +43,6 @@ def match_info(start, num):
                 last_submit_time = None
             print("{} {} {} {} {} {}/{}".format(username, total_sub, total_ac, total_wa, last_submit_time, cnt, num))
 
-            if user['username'] == '201700800423何雨辰':
-                total_sub = 99999
-                total_ac = 0
-                total_wa = 99999
-
             cnt += 1
             vj['user'].find_and_modify(
                 {'username': username},

@@ -59,7 +59,7 @@ oj_list = [
 scylla_proxy = {'http': "{}:8081".format(host)}
 
 # 全局代理
-proxy = None
+proxy = scylla_proxy
 
 # 获取题目 url
 problem_api_url = 'https://vjudge.net/problem/data'
@@ -158,17 +158,3 @@ def print_info(message):
             print("%s [INFO] %s" % (getTime(), message))
         except Exception as e:
             print("%s [ERROR] 编码错误\n%s" % (getTime(), e))
-
-
-# proxy_pool
-import requests
-
-proxy_pool_url = "http://{}:5010".format(host)
-
-
-def get_proxy():
-    return requests.get("{}/get/".format(proxy_pool_url)).text
-
-
-def delete_proxy(proxy):
-    requests.get("{}/delete/?proxy={}".format(proxy_pool_url, proxy))
