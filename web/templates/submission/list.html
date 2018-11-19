@@ -12,16 +12,16 @@
         <option value="{{ oj['oj'] }}">{{ oj['oj'] }}</option>
         {% end %}
     </select>&nbsp;
-    <script>setSelectedOption("filters-soj", "{{ params["soj"] }}");</script>
-    <input id="submission-filters-sid" type="text" name="sid" value="{{ params["sid"] }}" placeholder="ID" class="form-control" />&nbsp;
-    <input id="submission-filters-nickname" type="text" name="nickname" value="{{ params["nickname"] }}" placeholder="Nickname - RegExp" class="form-control" />&nbsp;
-    <input id="submission-filters-result" type="text" name="result" value="{{ params["result"] }}" placeholder="Result - RegExp" class="form-control" />&nbsp;
+    <script>setSelectedOption("filters-soj", "{{ params['soj'] }}");</script>
+    <input id="submission-filters-sid" type="text" name="sid" value="{{ params['sid'] }}" placeholder="ID" class="form-control" />&nbsp;
+    <input id="submission-filters-nickname" type="text" name="nickname" value="{{ params['nickname'] }}" placeholder="Nickname - RegExp" class="form-control" />&nbsp;
+    <input id="submission-filters-result" type="text" name="result" value="{{ params['result'] }}" placeholder="Result - RegExp" class="form-control" />&nbsp;
     <button type="submit" class="btn btn-primary">
-        <span class="glyphicon glyphicon-search"><span>
-    </button>&nbsp;
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
     <a href="/submission" class="btn btn-default">
         <span class="glyphicon glyphicon-trash"></span>
-    </a>&nbsp;
+    </a>
     <button type="submit" class="btn btn-success pull-right">
         <span class="glyphicon glyphicon-refresh"></span>
     </button>
@@ -46,14 +46,20 @@
             <tr>
                 <td>{{ item["nickname"] }}</td>
                 <td>
-                    <a href="/problem/{{ item["soj"] }}/{{ item["sid"] }}">{{ item["soj"] }}-{{ item["sid"] }}</a>
+                    <a href="/problem/{{ item['soj'] }}/{{ item['sid'] }}">{{ item["soj"] }}-{{ item["sid"] }}</a>
                 </td>
                 {% if item["result"] == "Queueing" %}
                     <td class="result-queueing">Queueing</td>
                 {% elif item["result"] == "Accepted" %}
                     <td class="result-accepted">Accepted</td>
                 {% else %}
-                    <td class="result-error">{{ item["result"] }}</td>
+                    {% if item['result'] == "Unknown Error" and item["username"] == username %}
+                        <td class="result-error">
+                            <a href="/api/submit/resubmit/{{ item['_id'] }}"><span class="glyphicon glyphicon-repeat"></span> {{ item['result'] }}</a>
+                        </td>
+                    {% else %}
+                        <td class="result-error">{{ item["result"] }}</td>
+                    {% end %}
                 {% end %}
                 <td>{{ item["timeused"] }} ms</td>
                 <td>{{ item["memoryused"] }} kb</td>
@@ -62,7 +68,7 @@
                 <td>{{ item["submittime"].strftime("%Y-%m-%d %H:%M:%S") }}</td>
                 {% if item["username"] == username %}
                     <td>
-                        <a href="/submission/{{ str(item["_id"]) }}">
+                        <a href="/submission/{{ str(item['_id']) }}">
                             <span class="glyphicon glyphicon-arrow-right"></span>
                             More
                         </a>

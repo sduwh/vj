@@ -33,6 +33,7 @@ import controllers.signupdelete
 
 import controllers.api.user.record
 import controllers.api.user.resetpassword
+import controllers.api.submit.resubmit
 
 settings = {
     "static_path": config.static_path,
@@ -71,6 +72,7 @@ def main():
         (r"/signup/admin/delete", controllers.signupdelete.Handler),
         (r'/api/user/record', controllers.api.user.record.Handler),
         (r'/api/user/resetpassword', controllers.api.user.resetpassword.Handler),
+        (r'/api/submit/resubmit/(.+?)', controllers.api.submit.resubmit.Handler),
     ],
     **settings).listen(config.port)
     tornado.ioloop.IOLoop.current().start()
