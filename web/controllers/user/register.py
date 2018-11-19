@@ -50,6 +50,11 @@ class Handler(RequestHandler):
             "usertype": params["usertype"],
             "username": params["username"],
             "nickname": params["nickname"],
+            "last_submit_time": None,
+            "total_ac": 0,
+            "total_sub": 0,
+            "total_wa": 0,
+            "rank": None,
             "password": m.hexdigest(),
         })
         if not r.acknowledged:

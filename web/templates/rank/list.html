@@ -1,0 +1,46 @@
+{% extends "../layout.html" %}
+{% block body %}
+
+<h3>Rank</h3>
+<hr />
+<h6>榜单每日1点更新, 排名顺序: ['total_ac', 'last_submit_time']</h6>
+<form id="filters" class="form-inline">
+    <input id="filters-page" type="hidden" name="page" value="1"/>
+    <input type="text" name="nickname" value="{{ params['nickname'] }}" placeholder="Nickname - RegExp" class="form-control" />&nbsp;
+    <input type="text" name="rank" value="{{ params['rank'] }}" placeholder="Rank" class="form-control"/>
+    <button type="submit" class="btn btn-primary">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>&nbsp;
+    <a href="/rank" class="btn btn-default">
+        <span class="glyphicon glyphicon-trash"></span>
+    </a>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nickname</th>
+            <th>Total sub</th>
+            <th>Total ac</th>
+            <th>Total wa</th>
+            <th>Last Submit Time</th>
+            <th>Rank</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rank in ranks %}
+            <tr>
+                <td>{{ rank['nickname'] }}</td>
+                <td>{{ rank['total_sub'] }}</td>
+                <td>{{ rank['total_ac'] }}</td>
+                <td>{{ rank['total_wa'] }}</td>
+                <td>{{ rank['last_submit_time'] }}</td>
+                <td>{{ rank['rank'] }}</td>
+            </tr>
+        {% end %}
+    </tbody>
+</table>
+
+{% include "../components/pager.html" %}
+
+{% end %}

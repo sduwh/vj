@@ -26,7 +26,7 @@ import controllers.contest.problem
 import controllers.contest.submit
 import controllers.contest.submission
 import controllers.contest.rank
-
+import controllers.rank.list
 import controllers.signup
 import controllers.signupaccess
 import controllers.signupdelete
@@ -65,6 +65,7 @@ def main():
         (r"/contest/submit/(.+?)", controllers.contest.submit.Handler),
         (r"/contest/submission/(.+?)", controllers.contest.submission.Handler),
         (r"/contest/rank/(.+?)", controllers.contest.rank.Handler),
+        (r"/rank", controllers.rank.list.Handler),
         (r"/signup", controllers.signup.Handler),
         (r"/signup/admin/access", controllers.signupaccess.Handler),
         (r"/signup/admin/delete", controllers.signupdelete.Handler),
