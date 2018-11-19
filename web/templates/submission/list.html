@@ -53,7 +53,7 @@
                 {% elif item["result"] == "Accepted" %}
                     <td class="result-accepted">Accepted</td>
                 {% else %}
-                    {% if item['result'] == "Unknown Error" and item["username"] == username %}
+                    {% if item['result'] == "Unknown Error" and (item["username"] == username or username == "admin") %}
                         <td class="result-error">
                             <a href="/api/submit/resubmit/{{ item['_id'] }}"><span class="glyphicon glyphicon-repeat"></span> {{ item['result'] }}</a>
                         </td>
@@ -66,7 +66,7 @@
                 <td>{{ item["remote"] }}</td>
                 <td>{{ item["codesize"] }} bytes</td>
                 <td>{{ item["submittime"].strftime("%Y-%m-%d %H:%M:%S") }}</td>
-                {% if item["username"] == username %}
+                {% if item["username"] == username or username == "admin" %}
                     <td>
                         <a href="/submission/{{ str(item['_id']) }}">
                             <span class="glyphicon glyphicon-arrow-right"></span>
