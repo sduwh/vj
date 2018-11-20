@@ -114,7 +114,8 @@ class Handler(RequestHandler):
             prev['rank'] = prve_user.get('rank') if prve_user.get('rank') else 0
 
         next = {}
-        if my_rank < wa_first_user.get('rank'):
+        last_user = yield self.settings["database"]["user"].find_one(sort=[('rank', -1)])
+        if my_rank < last_user.get('rank'):
             next_user = yield self.settings["database"]["user"].find_one({
                 "rank": my_rank + 1,
             })
