@@ -46,6 +46,7 @@ class Handler(RequestHandler):
     def _add_user(self, params):
         m = hashlib.md5()
         m.update(params["password"].encode("utf8"))
+        last_user = yield self.settings["database"]["user"].find_one(sort=[('rank', -1)])
         r = yield self.settings["database"]["user"].insert_one({
             "usertype": params["usertype"],
             "username": params["username"],
@@ -54,7 +55,7 @@ class Handler(RequestHandler):
             "total_ac": 0,
             "total_sub": 0,
             "total_wa": 0,
-            "rank": None,
+            "rank": last_user['rank'] + 1,
             "password": m.hexdigest(),
         })
         if not r.acknowledged:
