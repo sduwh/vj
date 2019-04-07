@@ -16,8 +16,7 @@ class Handler(BaseHandler):
     def get(self, soj, sid):
         """题目详情"""
         try:
-            # problem = yield self._find_problem(soj, int(sid))
-            problem = yield self._find_problem(soj, sid)
+            problem = yield self._find_problem(soj, int(sid))
         except RuntimeError as err:
             self.render("message.html", text=str(err))
         else:

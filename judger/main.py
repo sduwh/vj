@@ -5,9 +5,9 @@ import pymongo
 
 import config
 import support
-import support.POJ
 import support.HDU
-# import support.SDUT
+import support.POJ
+import support.SDUT
 
 db = pymongo.MongoClient(config.dbhost)[config.dbname]
 
@@ -35,14 +35,13 @@ def serve():
             continue
         support.utils.log("新任务 soj: {}, sid: {}".format(sub['soj'], sub['sid']))
 
-
         try:
             # oj dispatcher
             ojclass = {
                 # str => class
                 "POJ": support.POJ.Runner,
                 "HDU": support.HDU.Runner,
-                # "SDUT": support.SDUT.Runner,
+                "SDUT": support.SDUT.Runner,
             }[sub["soj"]]
             sub["runid"], sub["result"], sub["timeused"], sub["memoryused"], sub["errorinfo"] = \
                 ojclass(config.accounts[sub["soj"]], config.timeout, config.time_interval, config.scylla_proxy).judge(
@@ -73,9 +72,5 @@ def serve():
             retry = 0
 
 
-def main():
-    serve()
-
-
 if __name__ == "__main__":
-    main()
+    serve()

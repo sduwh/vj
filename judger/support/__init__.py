@@ -4,7 +4,6 @@ import time
 import requests
 from .utils import log
 
-
 class OJ:
     """判题基类"""
 

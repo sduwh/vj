@@ -1,27 +1,30 @@
 {% extends "../layout.html" %}
 {% block body %}
 <h3>{{ problem["soj"] }}-{{ problem["sid"] }} {{ problem["title"] }}</h3>
-<hr/>
+<hr />
 
 <p class="text-muted pull-right">
-    {% if problem.get("Time limit") %}
-    Time Limit: {{ problem["Time limit"] }}/
-    {% end %}
-    {% if problem.get("Memory limit") %}
-    Memory Limit: {{ problem["Memory limit"] }}
-    {% end %}
+    Time Limit: {{ problem["timelimit"] }} ms /
+    Memory Limit: {{ problem["memorylimit"] }} kb
 </p>
 
 <h4>Description</h4>
-<!-- <iframe id="frame-description" src="https://vjudge.net/problem/description/15204?1537166901000" width="100%" height="900px" frameborder="0" scrolling="no" style="height: 1440px;"></iframe> -->
-<!-- <iframe id="frame-description" src="https://vjudge.net/problem/description/14884?1537174366000" width="100%" frameborder="0" scrolling="no"  style="height: 900px;"></iframe> -->
-<iframe id="frame-description"
-        src="{{ problem['description_url'] }}"
-        width="100%"
-        height="900px"
-        frameborder="0"
-        scrolling="auto">
-</iframe>
+<p>{% raw problem["description"] %}</p>
+
+<h4>Input</h4>
+<p>{% raw problem["input"] %}</p>
+
+<h4>Output</h4>
+<p>{% raw problem["output"] %}</p>
+
+<h4>Sample Input</h4>
+<pre>{% raw problem["sampleinput"] %}</pre>
+
+<h4>Sample Output</h4>
+<pre>{% raw problem["sampleoutput"] %}</pre>
+
+<h4>Source</h4>
+<pre>{% raw problem["source"].strip() if problem["source"].strip() else "None" %}</pre>
 <form name="codeForm" action="/problem/submit" method="POST">
     <input type="hidden" name="soj" value="{{ problem['soj'] }}"/>
     <input type="hidden" name="sid" value="{{ problem['sid'] }}"/>
