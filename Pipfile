@@ -1,22 +1,14 @@
 [[source]]
-url = "https://pypi.org/simple"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 verify_ssl = true
 name = "pypi"
 
 [packages]
-"beautifulsoup4" = "==4.6.3"
-"bs4" = "==0.0.1"
-lxml = "==4.2.5"
-motor = "==1.1"
-pymongo = "==3.4.0"
-tornado = "==4.4.2"
-"urllib3" = "==1.23"
+pymongo = "*"
+tornado = "==6.0.2"
 requests = "*"
 schedule = "*"
-
-[dev-packages]
-pylint = "*"
-"autopep8" = "*"
+motor = "==1.1"
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
